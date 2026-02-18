@@ -137,13 +137,19 @@ body {
 
 @media (max-width: 480px) {
   :root { --radius: 4px; }
-  body { font-size: 12px; padding: 8px; }
+  body { 
+    font-size: 12px; 
+    padding: 8px 0 8px 0;
+    margin: 0;
+    overflow-x: hidden;
+  }
   
   /* KPI cards on mobile: single column */
   .kpi-strip {
     grid-template-columns: 1fr !important;
     gap: 8px !important;
     margin: -1.2rem 0 1.2rem 0 !important;
+    padding: 0 8px;
   }
 
   /* KPI card padding for mobile */
