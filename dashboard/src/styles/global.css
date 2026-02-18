@@ -117,6 +117,13 @@ body {
   :root { --radius: 6px; }
   body { font-size: 13px; padding: 10px; }
   
+  /* KPI cards on tablet: 2 columns */
+  .kpi-strip {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+    margin: -1.5rem 0 1.5rem 0 !important;
+  }
+
   /* Stack layouts vertically */
   .grid-2 { display: flex !important; flex-direction: column !important; gap: 12px !important; }
   .grid-3 { display: flex !important; flex-direction: column !important; gap: 12px !important; }
@@ -127,9 +134,32 @@ body {
   :root { --radius: 4px; }
   body { font-size: 12px; padding: 8px; }
   
+  /* KPI cards on mobile: single column */
+  .kpi-strip {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+    margin: -1.2rem 0 1.2rem 0 !important;
+  }
+
+  /* KPI card padding for mobile */
+  .kpi-card {
+    padding: 0.9rem 0.9rem 0.7rem !important;
+  }
+
+  /* KPI value smaller on mobile */
+  .kpi-value {
+    font-size: 1.5rem !important;
+  }
+
+  /* KPI label smaller on mobile */
+  .kpi-label {
+    font-size: 0.65rem !important;
+  }
+
   /* Hide non-essential elements on mobile */
   .hide-mobile { display: none !important; }
   
   /* Full width on mobile */
   input, select { width: 100% !important; }
 }
+

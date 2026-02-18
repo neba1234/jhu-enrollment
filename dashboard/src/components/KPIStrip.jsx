@@ -3,7 +3,7 @@ import { Users, MapPin, BookOpen, CheckCircle, Trophy } from 'lucide-react';
 const styles = {
   strip: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
     gap: '1rem',
     margin: '-1.8rem 0 2rem',
     position: 'relative',
@@ -31,13 +31,13 @@ const styles = {
   },
   value: {
     fontFamily: 'var(--font-serif)',
-    fontSize: '1.85rem',
+    fontSize: 'clamp(1.4rem, 5vw, 1.85rem)',
     fontWeight: 700,
     color: 'var(--navy)',
     lineHeight: 1.1,
   },
   label: {
-    fontSize: '.75rem',
+    fontSize: 'clamp(0.65rem, 2.5vw, 0.75rem)',
     fontWeight: 500,
     color: 'var(--slate)',
     marginTop: '.2rem',
@@ -56,17 +56,17 @@ const kpiConfig = [
 
 export default function KPIStrip({ kpis }) {
   return (
-    <div style={styles.strip}>
+    <div className="kpi-strip" style={styles.strip}>
       {kpiConfig.map(({ key, label, icon: Icon, color, suffix }) => (
-        <div key={key} style={styles.card}>
+        <div key={key} className="kpi-card" style={styles.card}>
           <div style={{ ...styles.iconWrap, background: color }}>
             <Icon size={18} color="var(--navy)" />
           </div>
           <div>
-            <div style={styles.value}>
+            <div className="kpi-value" style={styles.value}>
               {kpis[key]}{suffix || ''}
             </div>
-            <div style={styles.label}>{label}</div>
+            <div className="kpi-label" style={styles.label}>{label}</div>
           </div>
         </div>
       ))}
