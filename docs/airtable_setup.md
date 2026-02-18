@@ -55,12 +55,11 @@ If you prefer to set up field types in advance:
 | End Date | Date | Course end (blank if in progress) |
 | Program Center | Single select | GovEx or BCPI |
 | Status | Single select | Completed or In Progress |
-| Leader Name | Single line text | Leader's full name |
-| City | Single line text | City name |
+| Leader Name | Link to Leaders | Linked record (relational) |
+| City | Link to Cities | Linked record (relational) |
 | State | Single line text | State code |
 | Score (%) | Number (integer) | Completion percentage |
-| Leader | Link to Leaders | Linked record |
-| City Link | Link to Cities | Linked record |
+| Completed Flag | Formula | IF({Status}="Completed", 1, 0) |
 
 ## Running the Upload
 

@@ -112,7 +112,11 @@ Output:
 
 ### 3. Upload to Airtable
 
-Create a base with three tables named **Leaders**, **Cities**, **Enrollments** (see [docs/airtable_setup.md](docs/airtable_setup.md)), then:
+Create a base with three tables named **Leaders**, **Cities**, **Enrollments** (see [docs/airtable_setup.md](docs/airtable_setup.md)). The **Enrollments** table uses linked records to maintain relational integrity:
+- **Leader Name** → Link to Leaders
+- **City** → Link to Cities
+
+Then:
 
 ```powershell
 # PowerShell
