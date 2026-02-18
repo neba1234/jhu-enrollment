@@ -8,6 +8,8 @@
 
 🔗 **[Live Dashboard](https://neba1234.github.io/jhu-enrollment/)**
 
+🔒 **Airtable Interface (Dean Review)**: Available upon request (not publicly shared).
+
 A full-stack solution for parsing, cleaning, uploading to Airtable, and visualizing enrollment data for the Johns Hopkins University School of Government & Policy.
 
 ---
@@ -17,6 +19,7 @@ A full-stack solution for parsing, cleaning, uploading to Airtable, and visualiz
 - [Overview](#overview)
 - [Project Structure](#project-structure)
 - [Quick Start](#quick-start)
+- [Airtable Interface](#airtable-interface)
 - [Key Findings](#key-findings)
 - [Technical Decisions](#technical-decisions)
 - [Requirements](#requirements)
@@ -136,6 +139,16 @@ npm run dev
 ```
 
 Open `http://localhost:5173` in your browser.
+
+---
+
+## Airtable Interface
+
+The Airtable Interface is kept private for safety. If needed, screenshots can be shared upon request.
+
+Screenshots:
+
+![Airtable Interface - Dean Review](docs/screenshots/airtable-interface-overview.PNG)
 
 ---
 
