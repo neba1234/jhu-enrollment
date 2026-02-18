@@ -24,6 +24,20 @@
   --font-sans: 'DM Sans', system-ui, sans-serif;
 }
 
+/* Dark mode theme */
+[data-theme="dark"] {
+  --warm-white: #1a1f2e;
+  --text: #f0f0f0;
+  --border: #2a3f5f;
+  --shadow: 0 1px 3px rgba(0,0,0,.3), 0 4px 12px rgba(0,0,0,.2);
+  --shadow-lg: 0 4px 24px rgba(0,0,0,.4);
+  --slate: #b0bcc4;
+  --gold-light: #3d2f1f;
+  --sky-light: #1a3a52;
+  --success-bg: #0f3d20;
+  --in-progress-bg: #3d3015;
+}
+
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
@@ -39,3 +53,83 @@ body {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--slate); }
+
+/* ====== ANIMATIONS ====== */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -1200px 0; }
+  100% { background-position: 1200px 0; }
+}
+
+@keyframes chartBars {
+  from { transform: scaleY(0); opacity: 0; }
+  to { transform: scaleY(1); opacity: 1; }
+}
+
+/* Smooth transitions */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Animation utility classes */
+.fade-in { animation: fadeIn 0.5s ease-in-out; }
+.slide-up { animation: slideUp 0.6s ease-out; }
+.slide-in-left { animation: slideInLeft 0.6s ease-out; }
+.pulse { animation: pulse 2s ease-in-out infinite; }
+
+/* Loading skeleton */
+.skeleton {
+  background: linear-gradient(90deg, var(--border) 25%, var(--sky-light) 50%, var(--border) 75%);
+  background-size: 1200px 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* ====== RESPONSIVE DESIGN ====== */
+@media (max-width: 1400px) {
+  body { font-size: 15px; }
+}
+
+@media (max-width: 1024px) {
+  :root { --radius: 8px; }
+  body { font-size: 14px; }
+}
+
+@media (max-width: 768px) {
+  :root { --radius: 6px; }
+  body { font-size: 13px; padding: 10px; }
+  
+  /* Stack layouts vertically */
+  .grid-2 { display: flex !important; flex-direction: column !important; gap: 12px !important; }
+  .grid-3 { display: flex !important; flex-direction: column !important; gap: 12px !important; }
+  .grid-4 { display: flex !important; flex-direction: column !important; gap: 12px !important; }
+}
+
+@media (max-width: 480px) {
+  :root { --radius: 4px; }
+  body { font-size: 12px; padding: 8px; }
+  
+  /* Hide non-essential elements on mobile */
+  .hide-mobile { display: none !important; }
+  
+  /* Full width on mobile */
+  input, select { width: 100% !important; }
+}

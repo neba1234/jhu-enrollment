@@ -1,4 +1,5 @@
-import { GraduationCap } from 'lucide-react';
+import { GraduationCap, Moon, Sun } from 'lucide-react';
+import { useDarkMode } from '../hooks/useDarkMode';
 
 const styles = {
   header: {
@@ -7,6 +8,7 @@ const styles = {
     padding: '2.5rem 2rem 2rem',
     position: 'relative',
     overflow: 'hidden',
+    animation: 'fadeIn 0.6s ease-in-out',
   },
   glow: {
     position: 'absolute',
@@ -26,6 +28,21 @@ const styles = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
+    gap: '2rem',
+  },
+  themeToggle: {
+    background: 'rgba(255,255,255,.12)',
+    border: '1px solid rgba(255,255,255,.2)',
+    color: 'white',
+    padding: '.6rem .8rem',
+    borderRadius: 'var(--radius)',
+    cursor: 'pointer',
+    fontSize: '1rem',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '.4rem',
+    transition: 'all 0.3s ease',
+    marginBottom: '.5rem',
   },
   badge: {
     display: 'inline-flex',
@@ -40,20 +57,23 @@ const styles = {
     padding: '.3rem .8rem',
     borderRadius: 20,
     marginBottom: '1rem',
+    animation: 'slideInLeft 0.6s ease-out',
   },
   title: {
     fontFamily: 'var(--font-serif)',
-    fontSize: '2rem',
+    fontSize: 'clamp(1.5rem, 4vw, 2rem)',
     fontWeight: 700,
     letterSpacing: '-.02em',
     marginBottom: '.35rem',
     lineHeight: 1.15,
+    animation: 'slideUp 0.6s ease-out 0.1s both',
   },
   subtitle: {
     opacity: .8,
     fontSize: '.95rem',
     maxWidth: 520,
     lineHeight: 1.5,
+    animation: 'slideUp 0.6s ease-out 0.2s both',
   },
   date: {
     fontSize: '.75rem',
@@ -62,10 +82,13 @@ const styles = {
     fontWeight: 500,
     letterSpacing: '.04em',
     textTransform: 'uppercase',
+    animation: 'slideUp 0.6s ease-out 0.3s both',
   },
 };
 
 export default function Header() {
+  const [isDark, setIsDark] = useDarkMode();
+
   return (
     <header style={styles.header}>
       <div style={styles.glow} />
@@ -81,6 +104,15 @@ export default function Header() {
           </p>
           <p style={styles.date}>Data as of December 2025</p>
         </div>
+        <button
+          onClick={() => setIsDark(!isDark)}
+          style={styles.themeToggle}
+          title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+          aria-label="Toggle dark mode"
+        >
+          {isDark ? <Sun size={18} /> : <Moon size={18} />}
+          <span style={{ fontSize: '.8rem' }}>{isDark ? 'Light' : 'Dark'}</span>
+        </button>
       </div>
     </header>
   );

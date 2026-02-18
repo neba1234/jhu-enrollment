@@ -1,12 +1,13 @@
-export function Card({ children, style = {} }) {
+export function Card({ children, style = {}, delay = 0 }) {
   return (
     <div
       style={{
-        background: 'white',
+        background: 'var(--warm-white)',
         borderRadius: 'var(--radius)',
         boxShadow: 'var(--shadow)',
-        padding: '1.5rem',
+        padding: 'clamp(1rem, 2vw, 1.5rem)',
         border: '1px solid var(--border)',
+        animation: `slideUp 0.6s ease-out ${delay}s both`,
         ...style,
       }}
     >
@@ -17,11 +18,11 @@ export function Card({ children, style = {} }) {
 
 export function SectionTitle({ title, subtitle }) {
   return (
-    <div style={{ marginBottom: '1rem' }}>
+    <div style={{ marginBottom: '1rem', animation: 'slideUp 0.6s ease-out' }}>
       <h2
         style={{
           fontFamily: 'var(--font-serif)',
-          fontSize: '1.25rem',
+          fontSize: 'clamp(1rem, 3vw, 1.25rem)',
           fontWeight: 600,
           color: 'var(--navy)',
           marginBottom: '.15rem',
@@ -55,6 +56,7 @@ export function Badge({ type, children }) {
         padding: '.15rem .5rem',
         borderRadius: 12,
         letterSpacing: '.02em',
+        transition: 'all 0.3s ease',
         ...c,
       }}
     >
