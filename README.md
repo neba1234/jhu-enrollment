@@ -19,11 +19,13 @@ A full-stack solution for parsing, cleaning, uploading to Airtable, and visualiz
 - [Overview](#overview)
 - [Project Structure](#project-structure)
 - [Quick Start](#quick-start)
+- [Architecture](#architecture)
 - [Airtable Interface](#airtable-interface)
 - [Key Findings](#key-findings)
 - [Technical Decisions](#technical-decisions)
 - [Requirements](#requirements)
 - [Contributing](#contributing)
+- [Changelog](#changelog)
 - [License](#license)
 
 ---
@@ -132,7 +134,7 @@ export AIRTABLE_BASE_ID="appXXXXXXXXXX"
 python src/airtable_upload.py
 ```
 
-The script automatically creates all required fields via the Metadata API, then uploads records in batches of 10.
+**⚠️ Security Warning:** Never commit API keys or personal access tokens. Use environment variables or a `.env` file (add `.env` to `.gitignore`). The script automatically creates all required fields via the Metadata API, then uploads records in batches of 10.
 
 ### 4. Launch the React Dashboard
 
@@ -143,6 +145,39 @@ npm run dev
 ```
 
 Open `http://localhost:5173` in your browser.
+
+---
+
+## Architecture
+
+### Data Flow
+
+```
+enrollment_data.csv
+        ↓
+  parse_data.py (normalize & validate)
+        ↓
+  cleaned/enrollment_data.json
+        ↓
+  airtable_upload.py (create schema + batch records)
+        ↓
+  Airtable Base (Leaders, Cities, Enrollments with linked records)
+        ↓
+  React Dashboard ← (reads from local JSON at build time)
+        ↓
+  GitHub Pages (live: neba1234.github.io/jhu-enrollment)
+```
+
+### Component Architecture
+
+**Backend:**
+- `parse_data.py` — Parses multi-delimiter CSV, creates relational DataFrames, exports JSON
+- `airtable_upload.py` — Creates Airtable schema via Metadata API, uploads records via batch REST API
+
+**Frontend:**
+- `useEnrollmentData.js` — Single source of truth; derives all metrics (KPIs, trends, top performers)
+- 8 React components — Focused presentation layer; no business logic
+- Global CSS — Dark mode, animations, responsive design via CSS custom properties
 
 ---
 
@@ -208,6 +243,12 @@ We'd love your contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guideli
 - Making and testing changes
 - Submitting pull requests
 - Reporting bugs
+
+---
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for a full history of releases and features.
 
 ---
 
