@@ -1,0 +1,21 @@
+record_id,name,email,title,tenure_start,tenure_end,joined_date
+1,Mayor Sarah Johnson,s.johnson@baltimore.gov,Mayor,2020,Present,2023-01-15
+2,Chief Innovation Officer Marcus Williams,m.williams@detroit.gov,Chief Innovation Officer,2022,Present,2023-03-10
+3,CTO Lisa Chen,l.chen@sf.gov,Chief Technology Officer,2021,Present,2022-11-20
+4,Deputy Mayor David Rodriguez,d.rodriguez@phoenix.gov,Deputy Mayor,2023,Present,2023-02-05
+5,Chief of Staff Amanda Thompson,a.thompson@baltimore.gov,Chief of Staff,2022,Present,2023-01-08
+6,Innovation Director James Park,j.park@seattle.gov,Innovation Director,2021,Present,2022-10-15
+7,City Manager Maria Gonzalez,m.gonzalez@miami.gov,City Manager,2020,Present,2023-02-20
+8,Chief Data Officer Robert Kim,r.kim@sf.gov,Chief Data Officer,2022,Present,2023-01-25
+9,Mayor Jennifer Davis,j.davis@austin.gov,Mayor,2023,Present,2022-12-10
+10,Budget Director Michael Brown,m.brown@detroit.gov,Budget Director,2021,Present,2023-01-30
+11,Deputy CTO Ashley Wilson,a.wilson@baltimore.gov,Deputy CTO,2023,Present,2023-03-05
+12,Policy Director Carlos Martinez,c.martinez@phoenix.gov,Policy Director,2022,Present,2022-11-30
+13,Chief Innovation Officer Nicole Adams,n.adams@baltimore.gov,Chief Innovation Officer,2022,Present,2023-01-12
+14,Data Analyst Kevin Lee,k.lee@sf.gov,Senior Data Analyst,2021,Present,2023-02-28
+15,Innovation Manager Rachel Green,r.green@austin.gov,Innovation Manager,2021,Present,2022-12-05
+16,Mayor Pro Tem Thomas Wilson,t.wilson@nashville.gov,Mayor Pro Tem,2022,Present,2023-01-20
+17,Chief Performance Officer Diana Chang,d.chang@denver.gov,Chief Performance Officer,2021,Present,2023-02-15
+18,Innovation Coordinator Alex Rivera,a.rivera@portland.gov,Innovation Coordinator,2023,Present,2023-03-01
+19,Deputy City Manager Laura Kim,l.kim@columbus.gov,Deputy City Manager,2020,Present,2023-01-05
+20,Chief Strategy Officer Mark Thompson,m.thompson@atlanta.gov,Chief Strategy Officer,2022,Present,2022-12-20

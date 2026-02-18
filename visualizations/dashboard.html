@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JHU Government & Policy — Enrollment Impact Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #002D72;
+    --navy-deep: #001a45;
+    --blue-mid: #005EB8;
+    --sky: #68ACE5;
+    --sky-light: #d4e8f8;
+    --gold: #CF8A00;
+    --gold-light: #f5e6c4;
+    --warm-white: #FAF8F5;
+    --slate: #4A5568;
+    --text: #1a202c;
+    --border: #e2e0dc;
+    --success: #2f855a;
+    --success-bg: #f0fff4;
+    --in-progress: #b7791f;
+    --in-progress-bg: #fffff0;
+    --radius: 10px;
+    --shadow: 0 1px 3px rgba(0,45,114,.08), 0 4px 12px rgba(0,45,114,.04);
+    --shadow-lg: 0 4px 24px rgba(0,45,114,.10);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--warm-white);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---- HEADER ---- */
+  .header {
+    background: linear-gradient(135deg, var(--navy-deep) 0%, var(--navy) 50%, var(--blue-mid) 100%);
+    color: white;
+    padding: 2.5rem 2rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -60%;
+    right: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(207,138,0,.15) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+  .header-badge {
+    display: inline-block;
+    font-size: .7rem;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.2);
+    padding: .3rem .8rem;
+    border-radius: 20px;
+    margin-bottom: 1rem;
+  }
+  .header h1 {
+    font-family: 'Source Serif 4', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -.02em;
+    margin-bottom: .35rem;
+  }
+  .header p {
+    opacity: .8;
+    font-size: .95rem;
+    max-width: 520px;
+  }
+
+  /* ---- LAYOUT ---- */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem 3rem;
+  }
+
+  /* ---- KPI STRIP ---- */
+  .kpi-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin: -1.8rem 0 2rem;
+    position: relative;
+    z-index: 2;
+  }
+  .kpi {
+    background: white;
+    border-radius: var(--radius);
+    padding: 1.25rem 1.25rem 1rem;
+    box-shadow: var(--shadow-lg);
+    border-top: 3px solid var(--navy);
+  }
+  .kpi-value {
+    font-family: 'Source Serif 4', serif;
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.1;
+  }
+  .kpi-label {
+    font-size: .78rem;
+    font-weight: 500;
+    color: var(--slate);
+    margin-top: .25rem;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+  }
+
+  /* ---- SECTION ---- */
+  .section {
+    margin-bottom: 2rem;
+  }
+  .section-title {
+    font-family: 'Source Serif 4', serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: .15rem;
+  }
+  .section-subtitle {
+    font-size: .85rem;
+    color: var(--slate);
+    margin-bottom: 1rem;
+  }
+
+  /* ---- CARDS ---- */
+  .card {
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+  }
+
+  /* ---- TWO-COL GRID ---- */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+  @media (max-width: 768px) {
+    .grid-2 { grid-template-columns: 1fr; }
+  }
+
+  /* ---- BAR CHART ---- */
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    margin-bottom: .55rem;
+  }
+  .bar-label {
+    width: 120px;
+    font-size: .82rem;
+    font-weight: 500;
+    text-align: right;
+    flex-shrink: 0;
+    color: var(--text);
+  }
+  .bar-track {
+    flex: 1;
+    height: 26px;
+    background: #f0eee9;
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 6px;
+    transition: width .8s cubic-bezier(.22,1,.36,1);
+    display: flex;
+    align-items: center;
+    padding-left: .6rem;
+    font-size: .72rem;
+    font-weight: 600;
+    color: white;
+    min-width: 36px;
+  }
+  .bar-fill.navy { background: linear-gradient(90deg, var(--navy), var(--blue-mid)); }
+  .bar-fill.gold { background: linear-gradient(90deg, var(--gold), #e0a520); }
+  .bar-fill.sky  { background: linear-gradient(90deg, var(--blue-mid), var(--sky)); }
+  .bar-value {
+    font-size: .78rem;
+    font-weight: 600;
+    width: 32px;
+    text-align: right;
+    flex-shrink: 0;
+    color: var(--slate);
+  }
+
+  /* ---- RING CHART (CSS only) ---- */
+  .ring-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    padding: 1rem 0;
+  }
+  .ring {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .ring-inner {
+    text-align: center;
+  }
+  .ring-value {
+    font-family: 'Source Serif 4', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .ring-label {
+    font-size: .7rem;
+    color: var(--slate);
+    font-weight: 500;
+  }
+
+  /* ---- TABLE ---- */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .82rem;
+  }
+  .data-table th {
+    text-align: left;
+    padding: .6rem .75rem;
+    font-weight: 600;
+    font-size: .72rem;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--slate);
+    border-bottom: 2px solid var(--navy);
+    white-space: nowrap;
+  }
+  .data-table td {
+    padding: .6rem .75rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  .data-table tbody tr:hover {
+    background: rgba(0,45,114,.02);
+  }
+  .badge {
+    display: inline-block;
+    font-size: .68rem;
+    font-weight: 600;
+    padding: .15rem .5rem;
+    border-radius: 12px;
+    letter-spacing: .02em;
+  }
+  .badge-completed { background: var(--success-bg); color: var(--success); }
+  .badge-progress  { background: var(--in-progress-bg); color: var(--in-progress); }
+  .badge-govex     { background: var(--sky-light); color: var(--navy); }
+  .badge-bcpi      { background: var(--gold-light); color: #7c5300; }
+
+  /* ---- SCORE PILL ---- */
+  .score-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: .3rem;
+    font-weight: 600;
+    font-size: .8rem;
+  }
+  .score-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+  }
+  .score-high  .score-dot { background: var(--success); }
+  .score-mid   .score-dot { background: var(--gold); }
+
+  /* ---- INSIGHTS ---- */
+  .insight-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+  .insight {
+    background: white;
+    border-left: 4px solid var(--gold);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 1rem 1.25rem;
+    box-shadow: var(--shadow);
+  }
+  .insight-title {
+    font-weight: 600;
+    font-size: .85rem;
+    margin-bottom: .25rem;
+    color: var(--navy);
+  }
+  .insight-body {
+    font-size: .82rem;
+    color: var(--slate);
+    line-height: 1.5;
+  }
+
+  /* ---- FOOTER ---- */
+  .footer {
+    text-align: center;
+    padding: 1.5rem;
+    font-size: .75rem;
+    color: var(--slate);
+    border-top: 1px solid var(--border);
+    margin-top: 1rem;
+  }
+
+  /* ---- LEGEND ---- */
+  .legend {
+    display: flex;
+    gap: 1.25rem;
+    margin-bottom: .75rem;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: .35rem;
+    font-size: .75rem;
+    font-weight: 500;
+    color: var(--slate);
+  }
+  .legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 3px;
+  }
+
+  /* Animate bars on load */
+  .bar-fill { width: 0 !important; }
+  .loaded .bar-fill { width: var(--w) !important; }
+
+  /* Map container */
+  .map-placeholder {
+    background: linear-gradient(135deg, #e8f0f8, #f0eee9);
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+  }
+  .map-placeholder svg {
+    opacity: .4;
+  }
+
+  /* City dots grid */
+  .city-dot-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: .6rem;
+  }
+  .city-dot-item {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .5rem .6rem;
+    background: #f7f6f3;
+    border-radius: 8px;
+    font-size: .78rem;
+  }
+  .city-bubble {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: .72rem;
+    flex-shrink: 0;
+  }
+  .city-dot-name {
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.2;
+  }
+  .city-dot-meta {
+    font-size: .68rem;
+    color: var(--slate);
+  }
+
+  .print-note { display: none; }
+  @media print {
+    .print-note { display: block; font-size: .75rem; color: #666; margin-top: .5rem; }
+    .header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="header-badge">Johns Hopkins University · School of Government & Policy</div>
+    <h1>Enrollment Impact Dashboard</h1>
+    <p>Program engagement and completion metrics across 12 cities — prepared for the Dean's review.</p>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- KPI STRIP -->
+  <div class="kpi-strip">
+    <div class="kpi">
+      <div class="kpi-value">20</div>
+      <div class="kpi-label">Government Leaders</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-value">12</div>
+      <div class="kpi-label">Cities Reached</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-value">51</div>
+      <div class="kpi-label">Course Enrollments</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-value">90%</div>
+      <div class="kpi-label">Completion Rate</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-value">91.8%</div>
+      <div class="kpi-label">Avg. Score (Completed)</div>
+    </div>
+  </div>
+
+  <!-- SECTION: CITY ENGAGEMENT -->
+  <div class="section">
+    <div class="section-title">Where We've Had the Most Impact</div>
+    <div class="section-subtitle">Course enrollments by city — Baltimore, San Francisco, and Austin lead in total engagement.</div>
+
+    <div class="grid-2">
+      <div class="card" id="city-bars">
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:var(--navy)"></div> Completed</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div> In Progress</div>
+        </div>
+        <!-- Bars injected by JS -->
+      </div>
+      <div class="card">
+        <div style="font-weight:600; font-size:.85rem; margin-bottom:.75rem; color:var(--navy)">City Engagement Map</div>
+        <div class="city-dot-grid" id="city-dots">
+          <!-- Dots injected by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: PROGRAM CENTERS -->
+  <div class="section">
+    <div class="section-title">Program Center Breakdown</div>
+    <div class="section-subtitle">BCPI leads with 28 enrollments (55%), GovEx at 23 enrollments (45%).</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="ring-container">
+          <div>
+            <div style="text-align:center; margin-bottom:.5rem">
+              <span class="badge badge-bcpi" style="font-size:.78rem; padding:.25rem .7rem">BCPI</span>
+            </div>
+            <svg width="130" height="130" viewBox="0 0 130 130">
+              <circle cx="65" cy="65" r="55" fill="none" stroke="#f0eee9" stroke-width="14"/>
+              <circle cx="65" cy="65" r="55" fill="none" stroke="var(--gold)" stroke-width="14"
+                stroke-dasharray="345.58" stroke-dashoffset="155.51" stroke-linecap="round"
+                transform="rotate(-90 65 65)" style="transition: stroke-dashoffset 1s ease"/>
+              <text x="65" y="62" text-anchor="middle" font-family="Source Serif 4, serif" font-size="28" font-weight="700" fill="var(--navy)">28</text>
+              <text x="65" y="80" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="11" fill="var(--slate)">enrollments</text>
+            </svg>
+            <div style="text-align:center; font-size:.78rem; color:var(--slate); margin-top:.25rem">Avg. score: <strong>92.1%</strong></div>
+          </div>
+          <div>
+            <div style="text-align:center; margin-bottom:.5rem">
+              <span class="badge badge-govex" style="font-size:.78rem; padding:.25rem .7rem">GovEx</span>
+            </div>
+            <svg width="130" height="130" viewBox="0 0 130 130">
+              <circle cx="65" cy="65" r="55" fill="none" stroke="#f0eee9" stroke-width="14"/>
+              <circle cx="65" cy="65" r="55" fill="none" stroke="var(--blue-mid)" stroke-width="14"
+                stroke-dasharray="345.58" stroke-dashoffset="190.07" stroke-linecap="round"
+                transform="rotate(-90 65 65)" style="transition: stroke-dashoffset 1s ease"/>
+              <text x="65" y="62" text-anchor="middle" font-family="Source Serif 4, serif" font-size="28" font-weight="700" fill="var(--navy)">23</text>
+              <text x="65" y="80" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="11" fill="var(--slate)">enrollments</text>
+            </svg>
+            <div style="text-align:center; font-size:.78rem; color:var(--slate); margin-top:.25rem">Avg. score: <strong>91.4%</strong></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div style="font-weight:600; font-size:.85rem; margin-bottom:.75rem; color:var(--navy)">Most Popular Courses</div>
+        <!-- Top courses bar chart -->
+        <div id="course-bars"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: COMPLETION TABLE -->
+  <div class="section">
+    <div class="section-title">Leader-Level Detail</div>
+    <div class="section-subtitle">All 51 course enrollments, sorted by city then leader.</div>
+    <div class="card" style="overflow-x:auto">
+      <table class="data-table" id="detail-table">
+        <thead>
+          <tr>
+            <th>Leader</th>
+            <th>Title</th>
+            <th>City</th>
+            <th>Course</th>
+            <th>Program</th>
+            <th>Status</th>
+            <th>Score</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION: KEY INSIGHTS -->
+  <div class="section">
+    <div class="section-title">Key Insights for the Dean</div>
+    <div class="insight-grid">
+      <div class="insight">
+        <div class="insight-title">Baltimore Is Our Anchor City</div>
+        <div class="insight-body">4 leaders, 9 enrollments, and a 92.1% average score — Baltimore shows the deepest institutional engagement across both GovEx and BCPI programs.</div>
+      </div>
+      <div class="insight">
+        <div class="insight-title">High Completion Across the Board</div>
+        <div class="insight-body">90% of all enrollments are completed with an average score of 91.8%. Only 5 enrollments are still in progress — indicating strong follow-through from participating leaders.</div>
+      </div>
+      <div class="insight">
+        <div class="insight-title">West Coast &amp; Southwest Emerging</div>
+        <div class="insight-body">San Francisco (8 enrollments), Austin (6), and Phoenix (5) round out our top cities. Seattle shows the highest avg. score at 95.3%, suggesting particularly strong candidates there.</div>
+      </div>
+      <div class="insight">
+        <div class="insight-title">Innovation Courses Drive Volume</div>
+        <div class="insight-body">Innovation 101 (5 enrollments) is the most popular entry-point course, followed by performance and data governance courses — suggesting leaders are seeking both innovation and operational skills.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Prepared for the Dean's Review · JHU School of Government & Policy · Data as of December 2025
+    <p class="print-note">Interactive version available at the project repository.</p>
+  </div>
+</div>
+
+<script>
+// ---- DATA ----
+const enrollmentData = {"leaders":[{"record_id":1,"name":"Mayor Sarah Johnson","email":"s.johnson@baltimore.gov","title":"Mayor","tenure_start":"2020","tenure_end":"Present","joined_date":"2023-01-15"},{"record_id":2,"name":"Chief Innovation Officer Marcus Williams","email":"m.williams@detroit.gov","title":"Chief Innovation Officer","tenure_start":"2022","tenure_end":"Present","joined_date":"2023-03-10"},{"record_id":3,"name":"CTO Lisa Chen","email":"l.chen@sf.gov","title":"Chief Technology Officer","tenure_start":"2021","tenure_end":"Present","joined_date":"2022-11-20"},{"record_id":4,"name":"Deputy Mayor David Rodriguez","email":"d.rodriguez@phoenix.gov","title":"Deputy Mayor","tenure_start":"2023","tenure_end":"Present","joined_date":"2023-02-05"},{"record_id":5,"name":"Chief of Staff Amanda Thompson","email":"a.thompson@baltimore.gov","title":"Chief of Staff","tenure_start":"2022","tenure_end":"Present","joined_date":"2023-01-08"},{"record_id":6,"name":"Innovation Director James Park","email":"j.park@seattle.gov","title":"Innovation Director","tenure_start":"2021","tenure_end":"Present","joined_date":"2022-10-15"},{"record_id":7,"name":"City Manager Maria Gonzalez","email":"m.gonzalez@miami.gov","title":"City Manager","tenure_start":"2020","tenure_end":"Present","joined_date":"2023-02-20"},{"record_id":8,"name":"Chief Data Officer Robert Kim","email":"r.kim@sf.gov","title":"Chief Data Officer","tenure_start":"2022","tenure_end":"Present","joined_date":"2023-01-25"},{"record_id":9,"name":"Mayor Jennifer Davis","email":"j.davis@austin.gov","title":"Mayor","tenure_start":"2023","tenure_end":"Present","joined_date":"2022-12-10"},{"record_id":10,"name":"Budget Director Michael Brown","email":"m.brown@detroit.gov","title":"Budget Director","tenure_start":"2021","tenure_end":"Present","joined_date":"2023-01-30"},{"record_id":11,"name":"Deputy CTO Ashley Wilson","email":"a.wilson@baltimore.gov","title":"Deputy CTO","tenure_start":"2023","tenure_end":"Present","joined_date":"2023-03-05"},{"record_id":12,"name":"Policy Director Carlos Martinez","email":"c.martinez@phoenix.gov","title":"Policy Director","tenure_start":"2022","tenure_end":"Present","joined_date":"2022-11-30"},{"record_id":13,"name":"Chief Innovation Officer Nicole Adams","email":"n.adams@baltimore.gov","title":"Chief Innovation Officer","tenure_start":"2022","tenure_end":"Present","joined_date":"2023-01-12"},{"record_id":14,"name":"Data Analyst Kevin Lee","email":"k.lee@sf.gov","title":"Senior Data Analyst","tenure_start":"2021","tenure_end":"Present","joined_date":"2023-02-28"},{"record_id":15,"name":"Innovation Manager Rachel Green","email":"r.green@austin.gov","title":"Innovation Manager","tenure_start":"2021","tenure_end":"Present","joined_date":"2022-12-05"},{"record_id":16,"name":"Mayor Pro Tem Thomas Wilson","email":"t.wilson@nashville.gov","title":"Mayor Pro Tem","tenure_start":"2022","tenure_end":"Present","joined_date":"2023-01-20"},{"record_id":17,"name":"Chief Performance Officer Diana Chang","email":"d.chang@denver.gov","title":"Chief Performance Officer","tenure_start":"2021","tenure_end":"Present","joined_date":"2023-02-15"},{"record_id":18,"name":"Innovation Coordinator Alex Rivera","email":"a.rivera@portland.gov","title":"Innovation Coordinator","tenure_start":"2023","tenure_end":"Present","joined_date":"2023-03-01"},{"record_id":19,"name":"Deputy City Manager Laura Kim","email":"l.kim@columbus.gov","title":"Deputy City Manager","tenure_start":"2020","tenure_end":"Present","joined_date":"2023-01-05"},{"record_id":20,"name":"Chief Strategy Officer Mark Thompson","email":"m.thompson@atlanta.gov","title":"Chief Strategy Officer","tenure_start":"2022","tenure_end":"Present","joined_date":"2022-12-20"}],"cities":[{"name":"Baltimore","state":"MD","population":585000,"region":"Mid-Atlantic","budget":"$4.2B"},{"name":"Detroit","state":"MI","population":639000,"region":"Great Lakes","budget":"$1.1B"},{"name":"San Francisco","state":"CA","population":815000,"region":"West Coast","budget":"$14.6B"},{"name":"Phoenix","state":"AZ","population":1680000,"region":"Southwest","budget":"$5.8B"},{"name":"Seattle","state":"WA","population":750000,"region":"Pacific Northwest","budget":"$7.4B"},{"name":"Miami","state":"FL","population":470000,"region":"Southeast","budget":"$1.4B"},{"name":"Austin","state":"TX","population":965000,"region":"South Central","budget":"$4.7B"},{"name":"Nashville","state":"TN","population":695000,"region":"Southeast","budget":"$2.8B"},{"name":"Denver","state":"CO","population":715000,"region":"Mountain West","budget":"$1.7B"},{"name":"Portland","state":"OR","population":650000,"region":"Pacific Northwest","budget":"$6.8B"},{"name":"Columbus","state":"OH","population":905000,"region":"Great Lakes","budget":"$1.2B"},{"name":"Atlanta","state":"GA","population":510000,"region":"Southeast","budget":"$3.2B"}],"enrollments":[{"record_id":1,"leader_name":"Mayor Sarah Johnson","course_name":"Data Governance Fundamentals","duration_weeks":8,"start_date":"2023-02-01","end_date":"2023-03-28","city":"Baltimore","state":"MD","program_center":"GovEx","completion_status":"Completed","score":92},{"record_id":1,"leader_name":"Mayor Sarah Johnson","course_name":"Performance Management Systems","duration_weeks":6,"start_date":"2023-04-10","end_date":"2023-05-22","city":"Baltimore","state":"MD","program_center":"GovEx","completion_status":"Completed","score":88},{"record_id":2,"leader_name":"Chief Innovation Officer Marcus Williams","course_name":"Innovation 101","duration_weeks":4,"start_date":"2023-03-15","end_date":"2023-04-12","city":"Detroit","state":"MI","program_center":"BCPI","completion_status":"Completed","score":95},{"record_id":2,"leader_name":"Chief Innovation Officer Marcus Williams","course_name":"Digital Transformation Strategy","duration_weeks":10,"start_date":"2023-04-20","end_date":"2023-06-29","city":"Detroit","state":"MI","program_center":"BCPI","completion_status":"Completed","score":91},{"record_id":3,"leader_name":"CTO Lisa Chen","course_name":"Data Visualization for Leaders","duration_weeks":6,"start_date":"2022-12-01","end_date":"2023-01-12","city":"San Francisco","state":"CA","program_center":"GovEx","completion_status":"Completed","score":97},{"record_id":3,"leader_name":"CTO Lisa Chen","course_name":"Open Data Implementation","duration_weeks":8,"start_date":"2023-01-20","end_date":"2023-03-17","city":"San Francisco","state":"CA","program_center":"GovEx","completion_status":"Completed","score":94},{"record_id":3,"leader_name":"CTO Lisa Chen","course_name":"Innovation Lab Setup","duration_weeks":12,"start_date":"2023-04-01","end_date":"2023-06-24","city":"San Francisco","state":"CA","program_center":"BCPI","completion_status":"Completed","score":89},{"record_id":4,"leader_name":"Deputy Mayor David Rodriguez","course_name":"Local Infrastructure Seminar","duration_weeks":10,"start_date":"2023-02-15","end_date":"2023-04-26","city":"Phoenix","state":"AZ","program_center":"BCPI","completion_status":"Completed","score":87},{"record_id":4,"leader_name":"Deputy Mayor David Rodriguez","course_name":"Public-Private Partnership Design","duration_weeks":8,"start_date":"2023-05-01","end_date":"2023-06-26","city":"Phoenix","state":"AZ","program_center":"BCPI","completion_status":"Completed","score":93},{"record_id":5,"leader_name":"Chief of Staff Amanda Thompson","course_name":"Evidence-Based Policy Making","duration_weeks":12,"start_date":"2023-01-15","end_date":"2023-04-09","city":"Baltimore","state":"MD","program_center":"GovEx","completion_status":"Completed","score":90},{"record_id":5,"leader_name":"Chief of Staff Amanda Thompson","course_name":"Data Analytics for Government","duration_weeks":8,"start_date":"2023-04-15","end_date":"2023-06-10","city":"Baltimore","state":"MD","program_center":"GovEx","completion_status":"Completed","score":94},{"record_id":6,"leader_name":"Innovation Director James Park","course_name":"Innovation 101","duration_weeks":4,"start_date":"2022-11-01","end_date":"2022-11-29","city":"Seattle","state":"WA","program_center":"BCPI","completion_status":"Completed","score":96},{"record_id":6,"leader_name":"Innovation Director James Park","course_name":"Civic Technology Implementation","duration_weeks":14,"start_date":"2022-12-05","end_date":"2023-03-14","city":"Seattle","state":"WA","program_center":"BCPI","completion_status":"Completed","score":92},{"record_id":6,"leader_name":"Innovation Director James Park","course_name":"Smart City Strategy","duration_weeks":10,"start_date":"2023-03-20","end_date":"2023-05-29","city":"Seattle","state":"WA","program_center":"BCPI","completion_status":"Completed","score":98},{"record_id":7,"leader_name":"City Manager Maria Gonzalez","course_name":"Performance Measurement","duration_weeks":10,"start_date":"2023-03-01","end_date":"2023-05-10","city":"Miami","state":"FL","program_center":"GovEx","completion_status":"Completed","score":89},{"record_id":7,"leader_name":"City Manager Maria Gonzalez","course_name":"Budget Analytics","duration_weeks":8,"start_date":"2023-05-15","end_date":"2023-07-10","city":"Miami","state":"FL","program_center":"GovEx","completion_status":"In Progress","score":75},{"record_id":8,"leader_name":"Chief Data Officer Robert Kim","course_name":"Data Governance Fundamentals","duration_weeks":8,"start_date":"2023-02-01","end_date":"2023-03-29","city":"San Francisco","state":"CA","program_center":"GovEx","completion_status":"Completed","score":93},{"record_id":8,"leader_name":"Chief Data Officer Robert Kim","course_name":"Open Data Implementation","duration_weeks":8,"start_date":"2023-04-05","end_date":"2023-05-31","city":"San Francisco","state":"CA","program_center":"GovEx","completion_status":"Completed","score":91},{"record_id":8,"leader_name":"Chief Data Officer Robert Kim","course_name":"Data Privacy in Government","duration_weeks":6,"start_date":"2023-06-05","end_date":"2023-07-17","city":"San Francisco","state":"CA","program_center":"GovEx","completion_status":"Completed","score":95},{"record_id":9,"leader_name":"Mayor Jennifer Davis","course_name":"Innovation 101","duration_weeks":4,"start_date":"2023-01-05","end_date":"2023-02-02","city":"Austin","state":"TX","program_center":"BCPI","completion_status":"Completed","score":94},{"record_id":9,"leader_name":"Mayor Jennifer Davis","course_name":"Public Innovation Lab","duration_weeks":12,"start_date":"2023-02-10","end_date":"2023-05-05","city":"Austin","state":"TX","program_center":"BCPI","completion_status":"Completed","score":96},{"record_id":9,"leader_name":"Mayor Jennifer Davis","course_name":"Community Engagement 2.0","duration_weeks":8,"start_date":"2023-05-10","end_date":"2023-07-05","city":"Austin","state":"TX","program_center":"BCPI","completion_status":"Completed","score":91},{"record_id":10,"leader_name":"Budget Director Michael Brown","course_name":"Budget Analytics","duration_weeks":8,"start_date":"2023-02-10","end_date":"2023-04-07","city":"Detroit","state":"MI","program_center":"GovEx","completion_status":"Completed","score":88},{"record_id":10,"leader_name":"Budget Director Michael Brown","course_name":"Performance Management Systems","duration_weeks":6,"start_date":"2023-04-15","end_date":"2023-05-27","city":"Detroit","state":"MI","program_center":"GovEx","completion_status":"Completed","score":92},{"record_id":10,"leader_name":"Budget Director Michael Brown","course_name":"Data-Driven Decision Making","duration_weeks":10,"start_date":"2023-06-01","end_date":"2023-08-10","city":"Detroit","state":"MI","program_center":"GovEx","completion_status":"In Progress","score":68},{"record_id":11,"leader_name":"Deputy CTO Ashley Wilson","course_name":"Digital Government Strategy","duration_weeks":12,"start_date":"2023-03-20","end_date":"2023-06-12","city":"Baltimore","state":"MD","program_center":"BCPI","completion_status":"Completed","score":89},{"record_id":11,"leader_name":"Deputy CTO Ashley Wilson","course_name":"Civic Technology Implementation","duration_weeks":14,"start_date":"2023-06-20","end_date":"2023-09-25","city":"Baltimore","state":"MD","program_center":"BCPI","completion_status":"In Progress","score":72},{"record_id":12,"leader_name":"Policy Director Carlos Martinez","course_name":"Evidence-Based Policy Making","duration_weeks":12,"start_date":"2022-12-15","end_date":"2023-03-09","city":"Phoenix","state":"AZ","program_center":"GovEx","completion_status":"Completed","score":91},{"record_id":12,"leader_name":"Policy Director Carlos Martinez","course_name":"Data Analytics for Government","duration_weeks":8,"start_date":"2023-03-20","end_date":"2023-05-15","city":"Phoenix","state":"AZ","program_center":"GovEx","completion_status":"Completed","score":89},{"record_id":12,"leader_name":"Policy Director Carlos Martinez","course_name":"Innovation Lab Setup","duration_weeks":12,"start_date":"2023-05-25","end_date":"2023-08-17","city":"Phoenix","state":"AZ","program_center":"BCPI","completion_status":"Completed","score":93},{"record_id":13,"leader_name":"Chief Innovation Officer Nicole Adams","course_name":"Innovation 101","duration_weeks":4,"start_date":"2023-01-20","end_date":"2023-02-17","city":"Baltimore","state":"MD","program_center":"BCPI","completion_status":"Completed","score":97},{"record_id":13,"leader_name":"Chief Innovation Officer Nicole Adams","course_name":"Public Innovation Lab","duration_weeks":12,"start_date":"2023-02-25","end_date":"2023-05-20","city":"Baltimore","state":"MD","program_center":"BCPI","completion_status":"Completed","score":95},{"record_id":13,"leader_name":"Chief Innovation Officer Nicole Adams","course_name":"Smart City Strategy","duration_weeks":10,"start_date":"2023-05-30","end_date":"2023-08-08","city":"Baltimore","state":"MD","program_center":"BCPI","completion_status":"Completed","score":92},{"record_id":14,"leader_name":"Data Analyst Kevin Lee","course_name":"Data Visualization for Leaders","duration_weeks":6,"start_date":"2023-03-05","end_date":"2023-04-16","city":"San Francisco","state":"CA","program_center":"GovEx","completion_status":"Completed","score":94},{"record_id":14,"leader_name":"Data Analyst Kevin Lee","course_name":"Performance Measurement","duration_weeks":10,"start_date":"2023-04-25","end_date":"2023-07-03","city":"San Francisco","state":"CA","program_center":"GovEx","completion_status":"Completed","score":88},{"record_id":15,"leader_name":"Innovation Manager Rachel Green","course_name":"Digital Transformation Strategy","duration_weeks":10,"start_date":"2022-12-15","end_date":"2023-02-23","city":"Austin","state":"TX","program_center":"BCPI","completion_status":"Completed","score":96},{"record_id":15,"leader_name":"Innovation Manager Rachel Green","course_name":"Community Engagement 2.0","duration_weeks":8,"start_date":"2023-03-01","end_date":"2023-04-26","city":"Austin","state":"TX","program_center":"BCPI","completion_status":"Completed","score":93},{"record_id":15,"leader_name":"Innovation Manager Rachel Green","course_name":"Civic Technology Implementation","duration_weeks":14,"start_date":"2023-05-01","end_date":"2023-08-07","city":"Austin","state":"TX","program_center":"BCPI","completion_status":"Completed","score":91},{"record_id":16,"leader_name":"Mayor Pro Tem Thomas Wilson","course_name":"Local Infrastructure Seminar","duration_weeks":10,"start_date":"2023-02-01","end_date":"2023-04-12","city":"Nashville","state":"TN","program_center":"BCPI","completion_status":"Completed","score":85},{"record_id":16,"leader_name":"Mayor Pro Tem Thomas Wilson","course_name":"Public-Private Partnership Design","duration_weeks":8,"start_date":"2023-04-20","end_date":"2023-06-15","city":"Nashville","state":"TN","program_center":"BCPI","completion_status":"Completed","score":90},{"record_id":17,"leader_name":"Chief Performance Officer Diana Chang","course_name":"Performance Management Systems","duration_weeks":6,"start_date":"2023-03-01","end_date":"2023-04-12","city":"Denver","state":"CO","program_center":"GovEx","completion_status":"Completed","score":93},{"record_id":17,"leader_name":"Chief Performance Officer Diana Chang","course_name":"Data-Driven Decision Making","duration_weeks":10,"start_date":"2023-04-20","end_date":"2023-06-29","city":"Denver","state":"CO","program_center":"GovEx","completion_status":"Completed","score":91},{"record_id":17,"leader_name":"Chief Performance Officer Diana Chang","course_name":"Evidence-Based Policy Making","duration_weeks":12,"start_date":"2023-07-05","end_date":null,"city":"Denver","state":"CO","program_center":"GovEx","completion_status":"In Progress","score":55},{"record_id":18,"leader_name":"Innovation Coordinator Alex Rivera","course_name":"Innovation 101","duration_weeks":4,"start_date":"2023-03-10","end_date":"2023-04-07","city":"Portland","state":"OR","program_center":"BCPI","completion_status":"Completed","score":92},{"record_id":18,"leader_name":"Innovation Coordinator Alex Rivera","course_name":"Smart City Strategy","duration_weeks":10,"start_date":"2023-04-15","end_date":"2023-06-24","city":"Portland","state":"OR","program_center":"BCPI","completion_status":"Completed","score":87},{"record_id":19,"leader_name":"Deputy City Manager Laura Kim","course_name":"Budget Analytics","duration_weeks":8,"start_date":"2023-01-15","end_date":"2023-03-12","city":"Columbus","state":"OH","program_center":"GovEx","completion_status":"Completed","score":87},{"record_id":19,"leader_name":"Deputy City Manager Laura Kim","course_name":"Performance Measurement","duration_weeks":10,"start_date":"2023-03-20","end_date":"2023-05-29","city":"Columbus","state":"OH","program_center":"GovEx","completion_status":"Completed","score":89},{"record_id":19,"leader_name":"Deputy City Manager Laura Kim","course_name":"Innovation Lab Setup","duration_weeks":12,"start_date":"2023-06-05","end_date":null,"city":"Columbus","state":"OH","program_center":"BCPI","completion_status":"In Progress","score":42},{"record_id":20,"leader_name":"Chief Strategy Officer Mark Thompson","course_name":"Digital Transformation Strategy","duration_weeks":10,"start_date":"2023-01-05","end_date":"2023-03-16","city":"Atlanta","state":"GA","program_center":"BCPI","completion_status":"Completed","score":94},{"record_id":20,"leader_name":"Chief Strategy Officer Mark Thompson","course_name":"Public Innovation Lab","duration_weeks":12,"start_date":"2023-03-25","end_date":"2023-06-17","city":"Atlanta","state":"GA","program_center":"BCPI","completion_status":"Completed","score":92},{"record_id":20,"leader_name":"Chief Strategy Officer Mark Thompson","course_name":"Community Engagement 2.0","duration_weeks":8,"start_date":"2023-06-25","end_date":"2023-08-20","city":"Atlanta","state":"GA","program_center":"BCPI","completion_status":"Completed","score":88}]};
+
+// ---- HELPERS ----
+function shortName(fullName) {
+  // "Mayor Sarah Johnson" → "S. Johnson"
+  const parts = fullName.split(' ');
+  if (parts.length <= 1) return fullName;
+  // Remove title-like first words
+  const titles = ['Mayor','CTO','Deputy','Chief','City','Innovation','Budget','Data','Policy','Mayor Pro Tem'];
+  let nameStart = 0;
+  for (let i = 0; i < parts.length - 1; i++) {
+    if (titles.some(t => t.split(' ').includes(parts[i]))) {
+      nameStart = i + 1;
+    } else break;
+  }
+  const nameParts = parts.slice(nameStart);
+  if (nameParts.length >= 2) {
+    return nameParts[0][0] + '. ' + nameParts.slice(1).join(' ');
+  }
+  return nameParts.join(' ');
+}
+
+// ---- CITY BAR CHART ----
+(function() {
+  const el = document.getElementById('city-bars');
+  const enrollments = enrollmentData.enrollments;
+  const cityStats = {};
+
+  enrollments.forEach(e => {
+    if (!cityStats[e.city]) cityStats[e.city] = { completed: 0, inProgress: 0, total: 0, state: e.state };
+    cityStats[e.city].total++;
+    if (e.completion_status === 'Completed') cityStats[e.city].completed++;
+    else cityStats[e.city].inProgress++;
+  });
+
+  const sorted = Object.entries(cityStats).sort((a, b) => b[1].total - a[1].total);
+  const maxVal = sorted[0][1].total;
+
+  sorted.forEach(([city, stats]) => {
+    const compPct = (stats.completed / maxVal) * 100;
+    const ipPct = (stats.inProgress / maxVal) * 100;
+    const row = document.createElement('div');
+    row.className = 'bar-row';
+    row.innerHTML = `
+      <div class="bar-label">${city}, ${stats.state}</div>
+      <div class="bar-track">
+        <div class="bar-fill navy" style="--w:${compPct}%">${stats.completed}</div>
+      </div>
+      ${stats.inProgress > 0 ? `<div style="font-size:.68rem;color:var(--in-progress);font-weight:600">+${stats.inProgress}</div>` : '<div style="width:20px"></div>'}
+      <div class="bar-value">${stats.total}</div>
+    `;
+    el.appendChild(row);
+  });
+})();
+
+// ---- CITY DOT GRID ----
+(function() {
+  const el = document.getElementById('city-dots');
+  const enrollments = enrollmentData.enrollments;
+  const cityCount = {};
+  enrollments.forEach(e => { cityCount[e.city] = (cityCount[e.city] || 0) + 1; });
+  const cities = enrollmentData.cities;
+
+  // Sort by enrollment count
+  cities.sort((a, b) => (cityCount[b.name] || 0) - (cityCount[a.name] || 0));
+
+  cities.forEach(city => {
+    const count = cityCount[city.name] || 0;
+    const item = document.createElement('div');
+    item.className = 'city-dot-item';
+    item.innerHTML = `
+      <div class="city-bubble">${count}</div>
+      <div>
+        <div class="city-dot-name">${city.name}, ${city.state}</div>
+        <div class="city-dot-meta">${city.region} · Pop. ${(city.population/1000).toFixed(0)}K</div>
+      </div>
+    `;
+    el.appendChild(item);
+  });
+})();
+
+// ---- COURSE BAR CHART ----
+(function() {
+  const el = document.getElementById('course-bars');
+  const enrollments = enrollmentData.enrollments;
+  const courseCount = {};
+  enrollments.forEach(e => { courseCount[e.course_name] = (courseCount[e.course_name] || 0) + 1; });
+
+  const sorted = Object.entries(courseCount).sort((a, b) => b[1] - a[1]).slice(0, 7);
+  const maxVal = sorted[0][1];
+
+  sorted.forEach(([course, count]) => {
+    const pct = (count / maxVal) * 100;
+    const row = document.createElement('div');
+    row.className = 'bar-row';
+    // Shorten long names
+    const short = course.length > 20 ? course.slice(0, 20) + '…' : course;
+    row.innerHTML = `
+      <div class="bar-label" title="${course}" style="width:140px;font-size:.75rem">${short}</div>
+      <div class="bar-track" style="height:22px">
+        <div class="bar-fill gold" style="--w:${pct}%;font-size:.68rem">${count}</div>
+      </div>
+    `;
+    el.appendChild(row);
+  });
+})();
+
+// ---- DETAIL TABLE ----
+(function() {
+  const tbody = document.querySelector('#detail-table tbody');
+  const enrollments = [...enrollmentData.enrollments];
+  const leaderMap = {};
+  enrollmentData.leaders.forEach(l => { leaderMap[l.record_id] = l; });
+
+  // Sort by city, then leader
+  enrollments.sort((a, b) => {
+    if (a.city !== b.city) return a.city.localeCompare(b.city);
+    return a.leader_name.localeCompare(b.leader_name);
+  });
+
+  enrollments.forEach(e => {
+    const leader = leaderMap[e.record_id] || {};
+    const statusClass = e.completion_status === 'Completed' ? 'badge-completed' : 'badge-progress';
+    const centerClass = e.program_center === 'GovEx' ? 'badge-govex' : 'badge-bcpi';
+    const scoreClass = e.score >= 90 ? 'score-high' : 'score-mid';
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td style="font-weight:500">${shortName(e.leader_name)}</td>
+      <td style="font-size:.78rem;color:var(--slate)">${leader.title || ''}</td>
+      <td>${e.city}, ${e.state}</td>
+      <td>${e.course_name}</td>
+      <td><span class="badge ${centerClass}">${e.program_center}</span></td>
+      <td><span class="badge ${statusClass}">${e.completion_status}</span></td>
+      <td><span class="score-pill ${scoreClass}"><span class="score-dot"></span>${e.score != null ? e.score + '%' : '—'}</span></td>
+    `;
+    tbody.appendChild(tr);
+  });
+})();
+
+// ---- ANIMATE BARS ----
+requestAnimationFrame(() => {
+  setTimeout(() => document.body.classList.add('loaded'), 100);
+});
+</script>
+</body>
+</html>

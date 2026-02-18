@@ -1,0 +1,52 @@
+record_id,leader_name,course_name,duration_weeks,start_date,end_date,city,state,program_center,completion_status,score
+1,Mayor Sarah Johnson,Data Governance Fundamentals,8,2023-02-01,2023-03-28,Baltimore,MD,GovEx,Completed,92
+1,Mayor Sarah Johnson,Performance Management Systems,6,2023-04-10,2023-05-22,Baltimore,MD,GovEx,Completed,88
+2,Chief Innovation Officer Marcus Williams,Innovation 101,4,2023-03-15,2023-04-12,Detroit,MI,BCPI,Completed,95
+2,Chief Innovation Officer Marcus Williams,Digital Transformation Strategy,10,2023-04-20,2023-06-29,Detroit,MI,BCPI,Completed,91
+3,CTO Lisa Chen,Data Visualization for Leaders,6,2022-12-01,2023-01-12,San Francisco,CA,GovEx,Completed,97
+3,CTO Lisa Chen,Open Data Implementation,8,2023-01-20,2023-03-17,San Francisco,CA,GovEx,Completed,94
+3,CTO Lisa Chen,Innovation Lab Setup,12,2023-04-01,2023-06-24,San Francisco,CA,BCPI,Completed,89
+4,Deputy Mayor David Rodriguez,Local Infrastructure Seminar,10,2023-02-15,2023-04-26,Phoenix,AZ,BCPI,Completed,87
+4,Deputy Mayor David Rodriguez,Public-Private Partnership Design,8,2023-05-01,2023-06-26,Phoenix,AZ,BCPI,Completed,93
+5,Chief of Staff Amanda Thompson,Evidence-Based Policy Making,12,2023-01-15,2023-04-09,Baltimore,MD,GovEx,Completed,90
+5,Chief of Staff Amanda Thompson,Data Analytics for Government,8,2023-04-15,2023-06-10,Baltimore,MD,GovEx,Completed,94
+6,Innovation Director James Park,Innovation 101,4,2022-11-01,2022-11-29,Seattle,WA,BCPI,Completed,96
+6,Innovation Director James Park,Civic Technology Implementation,14,2022-12-05,2023-03-14,Seattle,WA,BCPI,Completed,92
+6,Innovation Director James Park,Smart City Strategy,10,2023-03-20,2023-05-29,Seattle,WA,BCPI,Completed,98
+7,City Manager Maria Gonzalez,Performance Measurement,10,2023-03-01,2023-05-10,Miami,FL,GovEx,Completed,89
+7,City Manager Maria Gonzalez,Budget Analytics,8,2023-05-15,2023-07-10,Miami,FL,GovEx,In Progress,75
+8,Chief Data Officer Robert Kim,Data Governance Fundamentals,8,2023-02-01,2023-03-29,San Francisco,CA,GovEx,Completed,93
+8,Chief Data Officer Robert Kim,Open Data Implementation,8,2023-04-05,2023-05-31,San Francisco,CA,GovEx,Completed,91
+8,Chief Data Officer Robert Kim,Data Privacy in Government,6,2023-06-05,2023-07-17,San Francisco,CA,GovEx,Completed,95
+9,Mayor Jennifer Davis,Innovation 101,4,2023-01-05,2023-02-02,Austin,TX,BCPI,Completed,94
+9,Mayor Jennifer Davis,Public Innovation Lab,12,2023-02-10,2023-05-05,Austin,TX,BCPI,Completed,96
+9,Mayor Jennifer Davis,Community Engagement 2.0,8,2023-05-10,2023-07-05,Austin,TX,BCPI,Completed,91
+10,Budget Director Michael Brown,Budget Analytics,8,2023-02-10,2023-04-07,Detroit,MI,GovEx,Completed,88
+10,Budget Director Michael Brown,Performance Management Systems,6,2023-04-15,2023-05-27,Detroit,MI,GovEx,Completed,92
+10,Budget Director Michael Brown,Data-Driven Decision Making,10,2023-06-01,2023-08-10,Detroit,MI,GovEx,In Progress,68
+11,Deputy CTO Ashley Wilson,Digital Government Strategy,12,2023-03-20,2023-06-12,Baltimore,MD,BCPI,Completed,89
+11,Deputy CTO Ashley Wilson,Civic Technology Implementation,14,2023-06-20,2023-09-25,Baltimore,MD,BCPI,In Progress,72
+12,Policy Director Carlos Martinez,Evidence-Based Policy Making,12,2022-12-15,2023-03-09,Phoenix,AZ,GovEx,Completed,91
+12,Policy Director Carlos Martinez,Data Analytics for Government,8,2023-03-20,2023-05-15,Phoenix,AZ,GovEx,Completed,89
+12,Policy Director Carlos Martinez,Innovation Lab Setup,12,2023-05-25,2023-08-17,Phoenix,AZ,BCPI,Completed,93
+13,Chief Innovation Officer Nicole Adams,Innovation 101,4,2023-01-20,2023-02-17,Baltimore,MD,BCPI,Completed,97
+13,Chief Innovation Officer Nicole Adams,Public Innovation Lab,12,2023-02-25,2023-05-20,Baltimore,MD,BCPI,Completed,95
+13,Chief Innovation Officer Nicole Adams,Smart City Strategy,10,2023-05-30,2023-08-08,Baltimore,MD,BCPI,Completed,92
+14,Data Analyst Kevin Lee,Data Visualization for Leaders,6,2023-03-05,2023-04-16,San Francisco,CA,GovEx,Completed,94
+14,Data Analyst Kevin Lee,Performance Measurement,10,2023-04-25,2023-07-03,San Francisco,CA,GovEx,Completed,88
+15,Innovation Manager Rachel Green,Digital Transformation Strategy,10,2022-12-15,2023-02-23,Austin,TX,BCPI,Completed,96
+15,Innovation Manager Rachel Green,Community Engagement 2.0,8,2023-03-01,2023-04-26,Austin,TX,BCPI,Completed,93
+15,Innovation Manager Rachel Green,Civic Technology Implementation,14,2023-05-01,2023-08-07,Austin,TX,BCPI,Completed,91
+16,Mayor Pro Tem Thomas Wilson,Local Infrastructure Seminar,10,2023-02-01,2023-04-12,Nashville,TN,BCPI,Completed,85
+16,Mayor Pro Tem Thomas Wilson,Public-Private Partnership Design,8,2023-04-20,2023-06-15,Nashville,TN,BCPI,Completed,90
+17,Chief Performance Officer Diana Chang,Performance Management Systems,6,2023-03-01,2023-04-12,Denver,CO,GovEx,Completed,93
+17,Chief Performance Officer Diana Chang,Data-Driven Decision Making,10,2023-04-20,2023-06-29,Denver,CO,GovEx,Completed,91
+17,Chief Performance Officer Diana Chang,Evidence-Based Policy Making,12,2023-07-05,,Denver,CO,GovEx,In Progress,55
+18,Innovation Coordinator Alex Rivera,Innovation 101,4,2023-03-10,2023-04-07,Portland,OR,BCPI,Completed,92
+18,Innovation Coordinator Alex Rivera,Smart City Strategy,10,2023-04-15,2023-06-24,Portland,OR,BCPI,Completed,87
+19,Deputy City Manager Laura Kim,Budget Analytics,8,2023-01-15,2023-03-12,Columbus,OH,GovEx,Completed,87
+19,Deputy City Manager Laura Kim,Performance Measurement,10,2023-03-20,2023-05-29,Columbus,OH,GovEx,Completed,89
+19,Deputy City Manager Laura Kim,Innovation Lab Setup,12,2023-06-05,,Columbus,OH,BCPI,In Progress,42
+20,Chief Strategy Officer Mark Thompson,Digital Transformation Strategy,10,2023-01-05,2023-03-16,Atlanta,GA,BCPI,Completed,94
+20,Chief Strategy Officer Mark Thompson,Public Innovation Lab,12,2023-03-25,2023-06-17,Atlanta,GA,BCPI,Completed,92
+20,Chief Strategy Officer Mark Thompson,Community Engagement 2.0,8,2023-06-25,2023-08-20,Atlanta,GA,BCPI,Completed,88
