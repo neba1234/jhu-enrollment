@@ -1,8 +1,27 @@
 # JHU Government & Policy — Enrollment Data Pipeline & Dashboard
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue)](https://www.python.org/)
+[![Node 18+](https://img.shields.io/badge/Node-18%2B-green)](https://nodejs.org/)
+[![React](https://img.shields.io/badge/React-19-blue?logo=react)](https://react.dev)
+[![Vite](https://img.shields.io/badge/Vite-7-purple?logo=vite)](https://vitejs.dev)
+
 🔗 **[Live Dashboard](https://neba1234.github.io/jhu-enrollment/)**
 
 A full-stack solution for parsing, cleaning, uploading to Airtable, and visualizing enrollment data for the Johns Hopkins University School of Government & Policy.
+
+---
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Project Structure](#project-structure)
+- [Quick Start](#quick-start)
+- [Key Findings](#key-findings)
+- [Technical Decisions](#technical-decisions)
+- [Requirements](#requirements)
+- [Contributing](#contributing)
+- [License](#license)
 
 ---
 
@@ -165,6 +184,19 @@ A standalone `visualizations/dashboard.html` file is included for environments w
 
 ---
 
+## Contributing
+
+We'd love your contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on:
+- Setting up your development environment
+- Making and testing changes
+- Submitting pull requests
+- Reporting bugs
+
+---
+
 ## License
 
-Internal use — Johns Hopkins University School of Government & Policy.
+This project is licensed under the **MIT License** — see [LICENSE](LICENSE) for details.
+
+For questions or collaboration, reach out to the JHU School of Government & Policy team.
+
