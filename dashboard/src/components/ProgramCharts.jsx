@@ -78,13 +78,17 @@ export default function ProgramCharts({ centerStats, courseStats }) {
     shortName: c.name.length > 22 ? c.name.slice(0, 22) + '…' : c.name,
   }));
 
+  // Responsive YAxis width for mobile
+  const isSmallScreen = typeof window !== 'undefined' && window.innerWidth < 768;
+  const yAxisWidth = isSmallScreen ? 80 : 140;
+
   return (
     <div>
       <SectionTitle
         title="Program Center Breakdown"
         subtitle={`BCPI leads with ${centerStats.find(c => c.name === 'BCPI')?.count || 0} enrollments (${centerStats.find(c => c.name === 'BCPI')?.pct || 0}%), GovEx at ${centerStats.find(c => c.name === 'GovEx')?.count || 0} (${centerStats.find(c => c.name === 'GovEx')?.pct || 0}%).`}
       />
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
+      <div className="program-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
         <Card>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '2.5rem', padding: '1rem 0' }}>
             {centerStats.map((c) => (
@@ -105,12 +109,12 @@ export default function ProgramCharts({ centerStats, courseStats }) {
             Most Popular Courses
           </div>
           <ResponsiveContainer width="100%" height={280}>
-            <BarChart data={topCourses} layout="vertical" margin={{ left: 0, right: 20, top: 0, bottom: 0 }}>
+            <BarChart data={topCourses} layout="vertical" margin={{ left: 0, right: 16, top: 0, bottom: 0 }}>
               <XAxis type="number" hide />
               <YAxis
                 type="category"
                 dataKey="shortName"
-                width={140}
+                width={yAxisWidth}
                 tick={{ fontSize: 11, fill: '#4A5568' }}
                 axisLine={false}
                 tickLine={false}
