@@ -1,0 +1,8 @@
+{
+  "buildCommand": "cd dashboard && npm run build",
+  "outputDirectory": "dashboard/dist",
+  "env": {
+    "AIRTABLE_BASE_ID": "@airtable_base_id",
+    "AIRTABLE_PAT": "@airtable_pat"
+  }
+}

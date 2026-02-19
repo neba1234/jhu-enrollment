@@ -55,6 +55,14 @@ const kpiConfig = [
 ];
 
 export default function KPIStrip({ kpis }) {
+  const formatValue = (key, value, suffix) => {
+    // For percentage metrics, show "—" if value is 0 (no data)
+    if ((key === 'completionRate' || key === 'avgScore') && value === 0) {
+      return '—';
+    }
+    return `${value}${suffix || ''}`;
+  };
+
   return (
     <div className="kpi-strip" style={styles.strip}>
       {kpiConfig.map(({ key, label, icon: Icon, color, suffix }) => (
@@ -64,7 +72,7 @@ export default function KPIStrip({ kpis }) {
           </div>
           <div>
             <div className="kpi-value" style={styles.value}>
-              {kpis[key]}{suffix || ''}
+              {formatValue(key, kpis[key], suffix)}
             </div>
             <div className="kpi-label" style={styles.label}>{label}</div>
           </div>

@@ -1,5 +1,6 @@
-import { GraduationCap, Moon, Sun } from 'lucide-react';
+import { GraduationCap, Moon, Sun, Zap } from 'lucide-react';
 import { useDarkMode } from '../hooks/useDarkMode';
+import { useEnrollmentData } from '../data/useEnrollmentDataLive';
 
 const styles = {
   header: {
@@ -88,6 +89,7 @@ const styles = {
 
 export default function Header() {
   const [isDark, setIsDark] = useDarkMode();
+  const { isLiveMode } = useEnrollmentData();
 
   return (
     <header style={styles.header}>
@@ -95,6 +97,13 @@ export default function Header() {
       <div style={styles.inner}>
         <div>
           <div style={styles.badge}>
+            {isLiveMode && (
+              <>
+                <Zap size={14} style={{ color: '#EAB308' }} />
+                <span style={{ color: '#EAB308', fontWeight: 700 }}>● LIVE</span>
+                <span>•</span>
+              </>
+            )}
             <GraduationCap size={14} />
             Johns Hopkins University · School of Government &amp; Policy
           </div>

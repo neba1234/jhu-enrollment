@@ -3,6 +3,7 @@ import { ChevronUp, ChevronDown, Search } from 'lucide-react';
 import { Card, SectionTitle, Badge } from './UI';
 
 function shortName(fullName) {
+  if (!fullName) return '—';
   const titles = ['Mayor', 'CTO', 'Deputy', 'Chief', 'City', 'Innovation', 'Budget', 'Data', 'Policy'];
   const parts = fullName.split(' ');
   let start = 0;
@@ -43,10 +44,10 @@ export default function DetailTable({ enrollments, leaders }) {
       const q = filter.toLowerCase();
       data = data.filter(
         (e) =>
-          e.leader_name.toLowerCase().includes(q) ||
-          e.city.toLowerCase().includes(q) ||
-          e.course_name.toLowerCase().includes(q) ||
-          e.program_center.toLowerCase().includes(q)
+          (e.leader_name || '').toLowerCase().includes(q) ||
+          (e.city || '').toLowerCase().includes(q) ||
+          (e.course_name || '').toLowerCase().includes(q) ||
+          (e.program_center || '').toLowerCase().includes(q)
       );
     }
 

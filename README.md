@@ -6,7 +6,9 @@
 [![React](https://img.shields.io/badge/React-19-blue?logo=react)](https://react.dev)
 [![Vite](https://img.shields.io/badge/Vite-7-purple?logo=vite)](https://vitejs.dev)
 
-🔗 **[Live Dashboard](https://neba1234.github.io/jhu-enrollment/)**
+🔗 **[Live Dashboard](https://neba1234.github.io/jhu-enrollment/)** — Real-time Airtable data (via Vercel backend, falls back to static)
+
+🔗 **[Static Dashboard](https://neba1234.github.io/jhu-enrollment/static.html)** — Pure JSON version (no server required)
 
 🔒 **Airtable Interface (Dean Review)**: Available upon request (not publicly shared).
 

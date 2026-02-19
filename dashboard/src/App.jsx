@@ -1,4 +1,5 @@
-import { useEnrollmentData } from './data/useEnrollmentData';
+// Use live data hook if available, otherwise fallback to static
+import { useEnrollmentData } from './data/useEnrollmentDataLive';
 import Header from './components/Header';
 import KPIStrip from './components/KPIStrip';
 import CityChart from './components/CityChart';
@@ -6,6 +7,7 @@ import ProgramCharts from './components/ProgramCharts';
 import Timeline from './components/Timeline';
 import DetailTable from './components/DetailTable';
 import Insights from './components/Insights';
+import RefreshButton from './components/RefreshButton';
 
 const sectionStyle = { marginBottom: '2rem' };
 
@@ -18,12 +20,62 @@ export default function App() {
     centerStats,
     kpis,
     timeline,
+    // Live data props (will be undefined if using static data)
+    isLiveMode,
+    loading,
+    error,
+    lastRefreshed,
+    refresh,
   } = useEnrollmentData();
 
   return (
     <div>
       <Header />
       <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 1.5rem 3rem' }}>
+        {/* Show refresh button if in live mode */}
+        {isLiveMode && (
+          <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
+            <RefreshButton 
+              onRefresh={refresh} 
+              loading={loading} 
+              lastRefreshed={lastRefreshed}
+              isLiveMode={isLiveMode}
+            />
+          </div>
+        )}
+
+        {/* Show error message if live data failed */}
+        {error && (
+          <div style={{
+            padding: '1rem',
+            marginBottom: '1rem',
+            background: '#FEE2E2',
+            border: '1px solid #EF4444',
+            borderRadius: 'var(--radius)',
+            color: '#991B1B',
+            fontSize: '0.875rem',
+          }}>
+            ⚠️ Failed to load live data: {error}. Using static fallback data.
+          </div>
+        )}
+
+        {/* Show info message when live data has incomplete records */}
+        {isLiveMode && !error && kpis.completionRate === 0 && kpis.totalEnrollments > 0 && (
+          <div style={{
+            padding: '1rem',
+            marginBottom: '1rem',
+            background: '#DBEAFE',
+            border: '1px solid #3B82F6',
+            borderRadius: 'var(--radius)',
+            color: '#1E40AF',
+            fontSize: '0.875rem',
+          }}>
+            ℹ️ <strong>Live Mode:</strong> Showing {kpis.totalEnrollments} enrollments from Airtable. 
+            Completion metrics appear as "—" because <code>completion_status</code> and <code>score</code> fields 
+            are not populated in the live data. This demonstrates real-world data validation needs.
+          </div>
+        )}
+
         <KPIStrip kpis={kpis} />
 
         <div style={sectionStyle}>
