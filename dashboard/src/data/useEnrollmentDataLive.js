@@ -207,8 +207,9 @@ export function useEnrollmentData() {
 
   return {
     ...processedData,
-    // Live data metadata - detect if data actually came from backend, not just hostname
-    isLiveMode: liveData !== null && airtableEnabled,
+    // Show live mode badge if attempting to fetch from backend
+    // (will fall back gracefully to static if backend unavailable)
+    isLiveMode: airtableEnabled,
     loading,
     error,
     lastRefreshed,
