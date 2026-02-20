@@ -42,6 +42,28 @@ export default function App() {
           />
         </div>
 
+        {/* Show loading spinner while data is being fetched */}
+        {loading && !error && (
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '4rem 2rem',
+            gap: '1rem',
+          }}>
+            <div style={{
+              width: 48,
+              height: 48,
+              border: '4px solid var(--border)',
+              borderTop: '4px solid var(--gold)',
+              borderRadius: '50%',
+              animation: 'spin 1s linear infinite',
+            }} />
+            <p style={{ color: 'var(--slate)', fontSize: '0.9rem' }}>Loading live data from Airtable...</p>
+          </div>
+        )}
+
         {/* Show error message if live data failed */}
         {error && (
           <div style={{
@@ -74,27 +96,27 @@ export default function App() {
           </div>
         )}
 
-        <KPIStrip kpis={kpis} />
+        {!loading && <KPIStrip kpis={kpis} />}
 
-        <div style={sectionStyle}>
+        {!loading && <div style={sectionStyle}>
           <CityChart cityStats={cityStats} />
-        </div>
+        </div>}
 
-        <div style={sectionStyle}>
+        {!loading && <div style={sectionStyle}>
           <ProgramCharts centerStats={centerStats} courseStats={courseStats} />
-        </div>
+        </div>}
 
-        <div style={sectionStyle}>
+        {!loading && <div style={sectionStyle}>
           <Timeline timeline={timeline} />
-        </div>
+        </div>}
 
-        <div style={sectionStyle}>
+        {!loading && <div style={sectionStyle}>
           <DetailTable enrollments={enrollments} leaders={leaders} />
-        </div>
+        </div>}
 
-        <div style={sectionStyle}>
+        {!loading && <div style={sectionStyle}>
           <Insights />
-        </div>
+        </div>}
 
         <footer
           style={{
@@ -106,7 +128,7 @@ export default function App() {
             marginTop: '1rem',
           }}
         >
-          Prepared for the Dean's Review · JHU School of Government &amp; Policy · Data as of December 2025
+          Prepared for the Dean's Review · JHU School of Government &amp; Policy
         </footer>
       </div>
     </div>
