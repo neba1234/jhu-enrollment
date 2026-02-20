@@ -8,12 +8,12 @@
 
 /**
  * Check if we should attempt to fetch from backend API
- * Always attempt (will fall back gracefully if unavailable)
+ * Only enabled if explicitly configured via environment variable
  */
 export function isAirtableConfigured() {
-  // Always try to fetch from backend - it will gracefully fall back to static data if unavailable
-  // This allows the dashboard to work on any host (GitHub Pages, Vercel, etc.)
-  return true;
+  // Only try to fetch from backend if explicitly enabled
+  // This avoids showing error messages when backend isn't deployed
+  return import.meta.env.VITE_ENABLE_LIVE_MODE === 'true';
 }
 
 /**
@@ -76,11 +76,11 @@ function transformEnrollments(records, leaderMap = {}, cityMap = {}) {
  */
 async function fetchFromBackend() {
   try {
-    const baseUrl = typeof window !== 'undefined' 
-      ? window.location.origin 
-      : 'https://jhu-enrollment.vercel.app';
+    // Use Vercel backend URL from env variable, or fall back to production URL
+    // In local dev, this allows connecting to the deployed backend
+    const baseUrl = import.meta.env.VITE_API_URL || 'https://jhu-enrollment.vercel.app';
 
-    console.log('🔄 Fetching data from backend API...');
+    console.log('🔄 Fetching data from backend API:', baseUrl);
 
     const [leadersRes, citiesRes, enrollmentsRes] = await Promise.all([
       fetch(`${baseUrl}/api/leaders`),

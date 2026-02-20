@@ -11,6 +11,13 @@ venv/
 
 # Node
 dashboard/node_modules/
+dashboard/.env.local
+dashboard/.env
+dashboard/.vite/
+dashboard/dist/
+
+# Vercel
+.vercel
 
 # OS
 .DS_Store
