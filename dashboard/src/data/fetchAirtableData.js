@@ -7,11 +7,13 @@
  */
 
 /**
- * Check if we're in a live environment (Vercel deployment)
+ * Check if we should attempt to fetch from backend API
+ * Always attempt (will fall back gracefully if unavailable)
  */
 export function isAirtableConfigured() {
-  // If deployed on Vercel, API endpoints will be available
-  return typeof window !== 'undefined' && window.location.hostname.includes('vercel');
+  // Always try to fetch from backend - it will gracefully fall back to static data if unavailable
+  // This allows the dashboard to work on any host (GitHub Pages, Vercel, etc.)
+  return true;
 }
 
 /**
