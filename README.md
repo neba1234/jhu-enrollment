@@ -165,9 +165,9 @@ enrollment_data.csv
         ↓
   Airtable Base (Leaders, Cities, Enrollments with linked records)
         ↓
-  React Dashboard ← (reads from local JSON at build time)
+  Live Dashboard (attempts Vercel API → falls back to static JSON)
         ↓
-  GitHub Pages (live: neba1234.github.io/jhu-enrollment)
+  GitHub Pages (neba1234.github.io/jhu-enrollment)
 ```
 
 ### Component Architecture
@@ -175,11 +175,58 @@ enrollment_data.csv
 **Backend:**
 - `parse_data.py` — Parses multi-delimiter CSV, creates relational DataFrames, exports JSON
 - `airtable_upload.py` — Creates Airtable schema via Metadata API, uploads records via batch REST API
+- `/api/*.js` (Vercel) — Serverless functions that proxy Airtable API calls securely (credentials never exposed to client)
 
 **Frontend:**
-- `useEnrollmentData.js` — Single source of truth; derives all metrics (KPIs, trends, top performers)
+- `useEnrollmentData.js` — Static mode (reads bundled JSON)
+- `useEnrollmentDataLive.js` — Live mode (attempts Vercel backend API, falls back to static)
 - 8 React components — Focused presentation layer; no business logic
 - Global CSS — Dark mode, animations, responsive design via CSS custom properties
+
+---
+
+## Deployment
+
+### Two Versions, One Codebase
+
+**1. Live Dashboard** (Recommended for production)
+```
+https://neba1234.github.io/jhu-enrollment/
+```
+- Fetches data from Airtable via Vercel backend API
+- Falls back to bundled static JSON if backend unavailable
+- Shows "🔴 ● LIVE" badge when connected to Airtable
+- Refresh button to update data in real-time
+
+**2. Static Dashboard** (Works everywhere)
+```
+https://neba1234.github.io/jhu-enrollment/static.html
+```
+- Pure client-side, no server required
+- Uses bundled JSON data
+- Fast, reliable, no external dependencies
+
+### To Deploy Your Own Version
+
+1. **Fork this repo** to your GitHub account
+2. **Update GitHub Actions** (optional) or build locally:
+   ```bash
+   cd dashboard && npm run build
+   ```
+3. **Copy to `/docs`:**
+   ```bash
+   cp -r dashboard/dist/* docs/
+   ```
+4. **Enable GitHub Pages** in Settings → Pages:
+   - Source: Deploy from a branch
+   - Branch: main
+   - Folder: /docs
+
+5. **(Optional) Deploy Vercel backend for truly live data:**
+   - Install Vercel CLI: `npm i -g vercel`
+   - Run: `vercel`
+   - Add environment variables: `AIRTABLE_PAT`, `AIRTABLE_BASE_ID`
+   - Update frontend base URL in `src/data/fetchAirtableData.js`
 
 ---
 
