@@ -33,7 +33,7 @@ function transformLeaders(records) {
 
 function transformCities(records) {
   return records.map(record => ({
-    name: record.fields['City Name'] || record.fields['name'] || '',
+    name: record.fields['City'] || record.fields['City Name'] || record.fields['name'] || '',
     state: record.fields['State'] || record.fields['state'] || '',
     population: record.fields['Population'] || record.fields['population'] || 0,
     region: record.fields['Region'] || record.fields['region'] || '',
@@ -78,7 +78,7 @@ async function fetchFromBackend() {
   try {
     // Use Vercel backend URL from env variable, or fall back to production URL
     // In local dev, this allows connecting to the deployed backend
-    const baseUrl = import.meta.env.VITE_API_URL || 'https://jhu-enrollment.vercel.app';
+    const baseUrl = import.meta.env.VITE_API_URL || 'https://jhu-enrollment-fixed.vercel.app';
 
     console.log('🔄 Fetching data from backend API:', baseUrl);
 
@@ -134,7 +134,7 @@ export async function fetchAirtableData() {
 
     const cityMap = {};
     citiesRecords.forEach(record => {
-      cityMap[record.id] = record.fields['City'] || 'Unknown';
+      cityMap[record.id] = record.fields['City'] || record.fields['City Name'] || 'Unknown';
     });
 
     const data = {
