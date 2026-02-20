@@ -30,7 +30,7 @@ export default function App() {
 
   return (
     <div>
-      <Header />
+      <Header isLiveMode={isLiveMode} error={error} />
       <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 1.5rem 3rem' }}>
         {/* Show refresh button if in live mode */}
         <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>

@@ -1,6 +1,5 @@
 import { GraduationCap, Moon, Sun, Zap, AlertCircle } from 'lucide-react';
 import { useDarkMode } from '../hooks/useDarkMode';
-import { useEnrollmentData } from '../data/useEnrollmentDataLive';
 
 // Get current month/year for data date display
 function getCurrentMonthYear() {
@@ -93,9 +92,8 @@ const styles = {
   },
 };
 
-export default function Header() {
+export default function Header({ isLiveMode, error }) {
   const [isDark, setIsDark] = useDarkMode();
-  const { isLiveMode, error } = useEnrollmentData();
 
   return (
     <header style={styles.header}>
@@ -105,8 +103,8 @@ export default function Header() {
           <div style={styles.badge}>
             {isLiveMode && !error && (
               <>
-                <Zap size={14} style={{ color: '#EAB308' }} />
-                <span style={{ color: '#EAB308', fontWeight: 700 }}>● LIVE</span>
+                <Zap size={14} style={{ color: '#EF4444' }} />
+                <span style={{ color: '#EF4444', fontWeight: 700 }}>● LIVE</span>
                 <span>•</span>
               </>
             )}
