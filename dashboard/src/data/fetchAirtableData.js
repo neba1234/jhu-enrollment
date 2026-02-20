@@ -1,53 +1,17 @@
 /**
- * fetchAirtableData.js — Fetch enrollment data from Airtable (optional live mode)
+ * fetchAirtableData.js — Fetch enrollment data from Vercel backend API
  * 
- * This utility fetches data from Airtable when configured. If not configured,
- * the dashboard falls back to static JSON data (existing behavior).
- * 
- * Configuration (optional):
- * - Set VITE_AIRTABLE_PAT in .env.local
- * - Set VITE_AIRTABLE_BASE_ID in .env.local
+ * For live Airtable data, the frontend calls your Vercel serverless functions,
+ * which securely handle API credentials on the server side.
+ * No credentials are exposed in the client build.
  */
 
-const AIRTABLE_API_URL = 'https://api.airtable.com/v0';
-
 /**
- * Check if Airtable is configured
+ * Check if we're in a live environment (Vercel deployment)
  */
 export function isAirtableConfigured() {
-  return !!(import.meta.env.VITE_AIRTABLE_PAT && import.meta.env.VITE_AIRTABLE_BASE_ID);
-}
-
-/**
- * Fetch all records from an Airtable table with pagination support
- */
-async function fetchTableData(baseId, tableName, token) {
-  const headers = {
-    'Authorization': `Bearer ${token}`,
-    'Content-Type': 'application/json',
-  };
-
-  let allRecords = [];
-  let offset = null;
-
-  do {
-    const url = new URL(`${AIRTABLE_API_URL}/${baseId}/${encodeURIComponent(tableName)}`);
-    if (offset) {
-      url.searchParams.append('offset', offset);
-    }
-
-    const response = await fetch(url.toString(), { headers });
-    
-    if (!response.ok) {
-      throw new Error(`Failed to fetch ${tableName}: ${response.status} ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    allRecords = allRecords.concat(data.records);
-    offset = data.offset;
-  } while (offset);
-
-  return allRecords;
+  // If deployed on Vercel, API endpoints will be available
+  return typeof window !== 'undefined' && window.location.hostname.includes('vercel');
 }
 
 /**
@@ -76,19 +40,16 @@ function transformCities(records) {
 }
 
 function transformEnrollments(records, leaderMap = {}, cityMap = {}) {
-  return records.map((record, index) => {
-    // 'Leader Name' is a linked record field returning array of record IDs
+  return records.map((record) => {
     let leaderName = '';
     const leaderIds = record.fields['Leader Name'];
     if (Array.isArray(leaderIds) && leaderIds.length > 0) {
       leaderName = leaderMap[leaderIds[0]] || leaderIds[0];
     }
     
-    // 'City' is a linked record field returning array of record IDs
     let cityName = '';
     const cityIds = record.fields['City'];
     if (Array.isArray(cityIds) && cityIds.length > 0) {
-      // Resolve the city ID to city name using the map
       cityName = cityMap[cityIds[0]] || cityIds[0];
     }
     
@@ -109,14 +70,15 @@ function transformEnrollments(records, leaderMap = {}, cityMap = {}) {
 }
 
 /**
- * Try to fetch from Vercel backend API (production)
- * Falls back to direct Airtable calls if backend unavailable
+ * Fetch from Vercel backend API (server-side credentials, no client exposure)
  */
 async function fetchFromBackend() {
   try {
     const baseUrl = typeof window !== 'undefined' 
       ? window.location.origin 
       : 'https://jhu-enrollment.vercel.app';
+
+    console.log('🔄 Fetching data from backend API...');
 
     const [leadersRes, citiesRes, enrollmentsRes] = await Promise.all([
       fetch(`${baseUrl}/api/leaders`),
@@ -125,12 +87,14 @@ async function fetchFromBackend() {
     ]);
 
     if (!leadersRes.ok || !citiesRes.ok || !enrollmentsRes.ok) {
-      throw new Error('Backend API returned error');
+      throw new Error(`Backend returned ${leadersRes.status} / ${citiesRes.status} / ${enrollmentsRes.status}`);
     }
 
     const leadersData = await leadersRes.json();
     const citiesData = await citiesRes.json();
     const enrollmentsData = await enrollmentsRes.json();
+
+    console.log('✅ Backend API data received');
 
     return {
       leaders: leadersData.records,
@@ -138,92 +102,49 @@ async function fetchFromBackend() {
       enrollments: enrollmentsData.records,
     };
   } catch (error) {
-    console.warn('⚠️ Backend API unavailable, falling back to direct Airtable calls:', error.message);
+    console.warn('⚠️ Backend API error:', error.message);
     return null;
   }
 }
 
 /**
- * Fetch all enrollment data from Airtable
+ * Fetch enrollment data via backend API
  * Returns data in the same structure as enrollment_data.json
  */
 export async function fetchAirtableData() {
-  const token = import.meta.env.VITE_AIRTABLE_PAT;
-  const baseId = import.meta.env.VITE_AIRTABLE_BASE_ID;
-
   try {
-    // First try the backend API (for production)
-    console.log('🔄 Fetching data from backend API...');
+    console.log('🔄 Fetching enrollment data...');
+    
     const backendData = await fetchFromBackend();
-    if (backendData) {
-      const leadersRecords = backendData.leaders;
-      const citiesRecords = backendData.cities;
-      const enrollmentsRecords = backendData.enrollments;
-      console.log('✅ Data fetched from backend API');
-
-      // Use backend data with same transformation logic below
-      // (continue to transformation section with these records)
-      const leaderMap = {};
-      leadersRecords.forEach(record => {
-        leaderMap[record.id] = record.fields['Name'] || record.fields['name'] || 'Unknown';
-      });
-
-      const cityMap = {};
-      citiesRecords.forEach(record => {
-        const cityName = record.fields['City'] || 'Unknown';
-        cityMap[record.id] = cityName;
-      });
-
-      const data = {
-        leaders: transformLeaders(leadersRecords),
-        cities: transformCities(citiesRecords),
-        enrollments: transformEnrollments(enrollmentsRecords, leaderMap, cityMap),
-      };
-
-      console.log('✅ Airtable data loaded:', data.enrollments.length, 'enrollments (via backend)');
-      return data;
+    if (!backendData) {
+      throw new Error('Backend API unavailable and no credentials configured for direct access');
     }
 
-    // Fallback to direct Airtable calls (local development)
-    if (!token || !baseId) {
-      throw new Error('Airtable credentials not configured. Set VITE_AIRTABLE_PAT and VITE_AIRTABLE_BASE_ID in .env.local');
-    }
+    const leadersRecords = backendData.leaders;
+    const citiesRecords = backendData.cities;
+    const enrollmentsRecords = backendData.enrollments;
 
-    console.log('🔄 Fetching data directly from Airtable...');
-
-    // Fetch all tables in parallel
-    const [leadersRecords, citiesRecords, enrollmentsRecords] = await Promise.all([
-      fetchTableData(baseId, 'Leaders', token),
-      fetchTableData(baseId, 'Cities', token),
-      fetchTableData(baseId, 'Enrollments', token),
-    ]);
-
-    // Create a mapping of leader record ID to name for resolving linked records
+    // Create maps for resolving linked record IDs
     const leaderMap = {};
     leadersRecords.forEach(record => {
-      leaderMap[record.id] = record.fields['Name'] || record.fields['name'] || 'Unknown';
+      leaderMap[record.id] = record.fields['Name'] || 'Unknown';
     });
 
-    // Create a mapping of city record ID to city name for resolving linked records
     const cityMap = {};
     citiesRecords.forEach(record => {
-      // City field already contains the full city name, no need to append state
-      const cityName = record.fields['City'] || 'Unknown';
-      cityMap[record.id] = cityName;
+      cityMap[record.id] = record.fields['City'] || 'Unknown';
     });
 
-    // Transform to match JSON structure
     const data = {
       leaders: transformLeaders(leadersRecords),
       cities: transformCities(citiesRecords),
       enrollments: transformEnrollments(enrollmentsRecords, leaderMap, cityMap),
     };
 
-    console.log('✅ Airtable data loaded:', data.enrollments.length, 'enrollments');
-
+    console.log('✅ Data loaded:', data.enrollments.length, 'enrollments');
     return data;
   } catch (error) {
-    console.error('❌ Error fetching Airtable data:', error.message);
+    console.error('❌ Error fetching data:', error.message);
     throw error;
   }
 }
@@ -240,7 +161,7 @@ export async function fetchDataWithFallback(staticData) {
   try {
     return await fetchAirtableData();
   } catch (error) {
-    console.warn('⚠️ Failed to fetch from Airtable, falling back to static data:', error.message);
+    console.warn('⚠️ Failed to fetch from backend, falling back to static data:', error.message);
     return staticData;
   }
 }
