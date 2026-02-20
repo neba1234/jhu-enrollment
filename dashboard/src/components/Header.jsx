@@ -1,6 +1,12 @@
-import { GraduationCap, Moon, Sun, Zap } from 'lucide-react';
+import { GraduationCap, Moon, Sun, Zap, AlertCircle } from 'lucide-react';
 import { useDarkMode } from '../hooks/useDarkMode';
 import { useEnrollmentData } from '../data/useEnrollmentDataLive';
+
+// Get current month/year for data date display
+function getCurrentMonthYear() {
+  const now = new Date();
+  return now.toLocaleDateString('en-US', { month: 'long', year: 'numeric' }).toUpperCase();
+}
 
 const styles = {
   header: {
@@ -58,7 +64,7 @@ const styles = {
     padding: '.3rem .8rem',
     borderRadius: 20,
     marginBottom: '1rem',
-    animation: 'slideInLeft 0.6s ease-out',
+    animation: 'slideInLeft 0.6s ease-out, pulse 2s ease-in-out infinite',
   },
   title: {
     fontFamily: 'var(--font-serif)',
@@ -89,7 +95,7 @@ const styles = {
 
 export default function Header() {
   const [isDark, setIsDark] = useDarkMode();
-  const { isLiveMode } = useEnrollmentData();
+  const { isLiveMode, error } = useEnrollmentData();
 
   return (
     <header style={styles.header}>
@@ -97,10 +103,17 @@ export default function Header() {
       <div style={styles.inner}>
         <div>
           <div style={styles.badge}>
-            {isLiveMode && (
+            {isLiveMode && !error && (
               <>
                 <Zap size={14} style={{ color: '#EAB308' }} />
                 <span style={{ color: '#EAB308', fontWeight: 700 }}>● LIVE</span>
+                <span>•</span>
+              </>
+            )}
+            {isLiveMode && error && (
+              <>
+                <AlertCircle size={14} style={{ color: '#f87171' }} />
+                <span style={{ color: '#f87171', fontWeight: 700 }}>● FALLBACK</span>
                 <span>•</span>
               </>
             )}
@@ -111,7 +124,7 @@ export default function Header() {
           <p style={styles.subtitle}>
             Program engagement and completion metrics across 12 cities — prepared for the Dean's review.
           </p>
-          <p style={styles.date}>Data as of December 2025</p>
+          <p style={styles.date}>Data as of {getCurrentMonthYear()}</p>
         </div>
         <button
           onClick={() => setIsDark(!isDark)}

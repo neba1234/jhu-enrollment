@@ -6,7 +6,7 @@ import { Card, SectionTitle } from './UI';
 const NAVY = '#002D72';
 const GOLD = '#CF8A00';
 
-function CustomTooltip({ active, payload, label }) {
+function CustomTooltip({ active, payload }) {
   if (!active || !payload?.length) return null;
   const d = payload[0]?.payload;
   return (

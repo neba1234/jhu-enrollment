@@ -65,19 +65,22 @@ export default function KPIStrip({ kpis }) {
 
   return (
     <div className="kpi-strip" style={styles.strip}>
-      {kpiConfig.map(({ key, label, icon: Icon, color, suffix }) => (
-        <div key={key} className="kpi-card" style={styles.card}>
-          <div style={{ ...styles.iconWrap, background: color }}>
-            <Icon size={18} color="var(--navy)" />
-          </div>
-          <div>
-            <div className="kpi-value" style={styles.value}>
-              {formatValue(key, kpis[key], suffix)}
+      {kpiConfig.map((item) => {
+        const IconComponent = item.icon;
+        return (
+          <div key={item.key} className="kpi-card" style={styles.card}>
+            <div style={{ ...styles.iconWrap, background: item.color }}>
+              <IconComponent size={18} color="var(--navy)" />
             </div>
-            <div className="kpi-label" style={styles.label}>{label}</div>
+            <div>
+              <div className="kpi-value" style={styles.value}>
+                {formatValue(item.key, kpis[item.key], item.suffix)}
+              </div>
+              <div className="kpi-label" style={styles.label}>{item.label}</div>
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }
