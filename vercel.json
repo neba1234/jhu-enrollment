@@ -7,9 +7,5 @@
       "main": true,
       "gh-pages": false
     }
-  },
-  "env": {
-    "AIRTABLE_BASE_ID": "@airtable_base_id",
-    "AIRTABLE_PAT": "@airtable_pat"
   }
 }
