@@ -1,4 +1,4 @@
-// Use live data hook if available, otherwise fallback to static
+// Live enrollment dashboard — fetches from Vercel backend API
 import { useEnrollmentData } from './data/useEnrollmentDataLive';
 import Header from './components/Header';
 import KPIStrip from './components/KPIStrip';
@@ -20,7 +20,7 @@ export default function App() {
     centerStats,
     kpis,
     timeline,
-    // Live data props (will be undefined if using static data)
+    // Live data props
     isLiveMode,
     loading,
     error,
@@ -33,16 +33,14 @@ export default function App() {
       <Header />
       <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 1.5rem 3rem' }}>
         {/* Show refresh button if in live mode */}
-        {isLiveMode && (
-          <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
-            <RefreshButton 
-              onRefresh={refresh} 
-              loading={loading} 
-              lastRefreshed={lastRefreshed}
-              isLiveMode={isLiveMode}
-            />
-          </div>
-        )}
+        <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
+          <RefreshButton 
+            onRefresh={refresh} 
+            loading={loading} 
+            lastRefreshed={lastRefreshed}
+            isLiveMode={isLiveMode}
+          />
+        </div>
 
         {/* Show error message if live data failed */}
         {error && (
@@ -55,12 +53,12 @@ export default function App() {
             color: '#991B1B',
             fontSize: '0.875rem',
           }}>
-            ⚠️ Failed to load live data: {error}. Using static fallback data.
+            ⚠️ Failed to load live data: {error}
           </div>
         )}
 
         {/* Show info message when live data has incomplete records */}
-        {isLiveMode && !error && kpis.completionRate === 0 && kpis.totalEnrollments > 0 && (
+        {!error && kpis.completionRate === 0 && kpis.totalEnrollments > 0 && (
           <div style={{
             padding: '1rem',
             marginBottom: '1rem',

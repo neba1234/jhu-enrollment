@@ -1,6 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import staticData from '../data/enrollment_data.json';
-import { isAirtableConfigured, fetchAirtableData } from './fetchAirtableData';
+import { fetchAirtableData } from './fetchAirtableData';
 
 /**
  * Process raw data into computed metrics
@@ -167,23 +166,18 @@ function processEnrollmentData(rawData) {
 }
 
 /**
- * Hook to fetch and process enrollment data
- * Supports both static JSON (default) and live Airtable mode (optional)
+ * Hook to fetch and process live enrollment data from Vercel backend
  */
 export function useEnrollmentData() {
   const [liveData, setLiveData] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [lastRefreshed, setLastRefreshed] = useState(null);
-  
-  const airtableEnabled = isAirtableConfigured();
 
-  // Fetch live data on mount if Airtable is configured
+  // Fetch live data on mount
   useEffect(() => {
-    if (airtableEnabled) {
-      loadLiveData();
-    }
-  }, [airtableEnabled]);
+    loadLiveData();
+  }, []);
 
   const loadLiveData = async () => {
     setLoading(true);
@@ -194,22 +188,29 @@ export function useEnrollmentData() {
       setLastRefreshed(new Date());
     } catch (err) {
       setError(err.message);
-      console.warn('Failed to load live data, using static fallback');
     } finally {
       setLoading(false);
     }
   };
 
-  // Use live data if available, otherwise use static data
-  const sourceData = liveData || staticData;
-  
-  const processedData = useMemo(() => processEnrollmentData(sourceData), [sourceData]);
+  const processedData = useMemo(
+    () => (liveData ? processEnrollmentData(liveData) : null),
+    [liveData]
+  );
 
   return {
-    ...processedData,
-    // Show live mode badge if attempting to fetch from backend
-    // (will fall back gracefully to static if backend unavailable)
-    isLiveMode: airtableEnabled,
+    ...(processedData || {
+      leaders: [],
+      cities: [],
+      enrollments: [],
+      cityStats: [],
+      courseStats: [],
+      centerStats: [],
+      regionStats: [],
+      kpis: { totalLeaders: 0, totalCities: 0, totalEnrollments: 0, completionRate: 0, avgScore: 0, totalCompleted: 0, totalInProgress: 0 },
+      timeline: [],
+    }),
+    isLiveMode: true,
     loading,
     error,
     lastRefreshed,

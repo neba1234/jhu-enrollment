@@ -6,15 +6,7 @@
  * No credentials are exposed in the client build.
  */
 
-/**
- * Check if we should attempt to fetch from backend API
- * Only enabled if explicitly configured via environment variable
- */
-export function isAirtableConfigured() {
-  // Only try to fetch from backend if explicitly enabled
-  // This avoids showing error messages when backend isn't deployed
-  return import.meta.env.VITE_ENABLE_LIVE_MODE === 'true';
-}
+// Always fetch live data from Vercel backend API
 
 /**
  * Transform Airtable records to match the JSON structure
@@ -151,19 +143,4 @@ export async function fetchAirtableData() {
   }
 }
 
-/**
- * Fetch data with automatic fallback to static JSON
- */
-export async function fetchDataWithFallback(staticData) {
-  if (!isAirtableConfigured()) {
-    console.log('ℹ️ Using static JSON data (Airtable not configured)');
-    return staticData;
-  }
 
-  try {
-    return await fetchAirtableData();
-  } catch (error) {
-    console.warn('⚠️ Failed to fetch from backend, falling back to static data:', error.message);
-    return staticData;
-  }
-}
