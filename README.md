@@ -6,9 +6,7 @@
 [![React](https://img.shields.io/badge/React-19-blue?logo=react)](https://react.dev)
 [![Vite](https://img.shields.io/badge/Vite-7-purple?logo=vite)](https://vitejs.dev)
 
-🔗 **[Live Dashboard](https://neba1234.github.io/jhu-enrollment/)** — Real-time Airtable data (via Vercel backend, falls back to static)
-
-🔗 **[Static Dashboard](https://neba1234.github.io/jhu-enrollment/static.html)** — Pure JSON version (no server required)
+🔗 **[Live Dashboard](https://neba1234.github.io/jhu-enrollment/)** — Real-time data from Airtable via Vercel backend API
 
 🔒 **Airtable Interface (Dean Review)**: Available upon request (not publicly shared).
 
@@ -65,21 +63,21 @@ jhu-enrollment/
 │   │   │   ├── CityChart.jsx      # Stacked bar chart + city grid
 │   │   │   ├── ProgramCharts.jsx  # BCPI/GovEx donut + course popularity
 │   │   │   ├── Timeline.jsx       # Monthly enrollment area chart
-│   │   │   ├── DetailTable.jsx    # Sortable, searchable 51-row table
+│   │   │   ├── DetailTable.jsx    # Sortable, searchable table
 │   │   │   ├── Insights.jsx       # 4 narrative takeaways
 │   │   │   └── UI.jsx             # Shared Card, Badge, SectionTitle
 │   │   ├── data/
-│   │   │   ├── enrollment_data.json
-│   │   │   └── useEnrollmentData.js  # Data hook (all derived metrics)
+│   │   │   ├── fetchAirtableData.js   # Vercel backend API client
+│   │   │   └── useEnrollmentDataLive.js  # Live data hook (all derived metrics)
 │   │   └── styles/
 │   │       └── global.css
 │   ├── package.json
 │   └── vite.config.js
-├── visualizations/
-│   └── dashboard.html             # Standalone HTML fallback (no build needed)
-├── docs/
-│   ├── airtable_setup.md          # Airtable base configuration guide
-│   └── walkthrough.md             # Step-by-step execution guide
+├── api/                           # Vercel serverless functions
+│   ├── leaders.js
+│   ├── cities.js
+│   └── enrollments.js
+├── docs/                          # GitHub Pages build output
 ├── requirements.txt
 └── README.md
 ```
@@ -165,9 +163,9 @@ enrollment_data.csv
         ↓
   Airtable Base (Leaders, Cities, Enrollments with linked records)
         ↓
-  Live Dashboard (attempts Vercel API → falls back to static JSON)
+  Vercel Serverless API (/api/leaders, /api/cities, /api/enrollments)
         ↓
-  GitHub Pages (neba1234.github.io/jhu-enrollment)
+  Live Dashboard on GitHub Pages (neba1234.github.io/jhu-enrollment)
 ```
 
 ### Component Architecture
@@ -178,8 +176,8 @@ enrollment_data.csv
 - `/api/*.js` (Vercel) — Serverless functions that proxy Airtable API calls securely (credentials never exposed to client)
 
 **Frontend:**
-- `useEnrollmentData.js` — Static mode (reads bundled JSON)
-- `useEnrollmentDataLive.js` — Live mode (attempts Vercel backend API, falls back to static)
+- `fetchAirtableData.js` — Fetches data from Vercel backend API
+- `useEnrollmentDataLive.js` — Live data hook with derived metrics
 - 8 React components — Focused presentation layer; no business logic
 - Global CSS — Dark mode, animations, responsive design via CSS custom properties
 
@@ -187,24 +185,15 @@ enrollment_data.csv
 
 ## Deployment
 
-### Two Versions, One Codebase
+### Live Dashboard
 
-**1. Live Dashboard** (Recommended for production)
 ```
 https://neba1234.github.io/jhu-enrollment/
 ```
-- Fetches data from Airtable via Vercel backend API
-- Falls back to bundled static JSON if backend unavailable
-- Shows "🔴 ● LIVE" badge when connected to Airtable
+- Fetches live data from Airtable via Vercel backend API
+- Shows "🔴 ● LIVE" badge when connected
 - Refresh button to update data in real-time
-
-**2. Static Dashboard** (Works everywhere)
-```
-https://neba1234.github.io/jhu-enrollment/static.html
-```
-- Pure client-side, no server required
-- Uses bundled JSON data
-- Fast, reliable, no external dependencies
+- Frontend hosted on GitHub Pages, backend on Vercel
 
 ### To Deploy Your Own Version
 
@@ -269,10 +258,7 @@ The raw CSV uses three layers of delimiters within single fields: pipes (`|`) fo
 The upload script uses the Airtable **Metadata API** (`/meta/bases/{id}/tables/{id}/fields`) to programmatically create fields with correct types (number, date, email, text) before uploading any records. This avoids the "Unknown field name" errors that occur with the standard Records API alone. Records are uploaded in batches of 10 with rate limiting (250ms between requests).
 
 ### React Dashboard
-Built with **Vite + React + Recharts**. Component architecture separates data processing (`useEnrollmentData` hook) from presentation (8 focused components). All metrics are derived from a single JSON source at build time — no runtime API calls needed. JHU brand colors (navy, gold) are applied via CSS custom properties.
-
-### Fallback Dashboard
-A standalone `visualizations/dashboard.html` file is included for environments without Node.js. It's fully self-contained — no dependencies, no build step, works offline.
+Built with **Vite + React + Recharts**. Component architecture separates data processing (`useEnrollmentDataLive` hook) from presentation (8 focused components). Live data is fetched from the Vercel backend API at runtime. JHU brand colors (navy, gold) are applied via CSS custom properties.
 
 ---
 
