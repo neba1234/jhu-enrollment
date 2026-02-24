@@ -47,7 +47,7 @@ export default function CityChart({ cityStats }) {
         title="Where We've Had the Most Impact"
         subtitle="Course enrollments by city — Baltimore, San Francisco, and Austin lead in total engagement."
       />
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
+      <div className="grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
         <Card>
           <div style={{ fontSize: '.78rem', color: 'var(--slate)', marginBottom: '.5rem', display: 'flex', gap: '1rem' }}>
             <span style={{ display: 'flex', alignItems: 'center', gap: '.3rem' }}>

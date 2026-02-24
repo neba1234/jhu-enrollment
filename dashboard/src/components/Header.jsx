@@ -34,6 +34,7 @@ const styles = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
+    flexWrap: 'wrap',
     gap: '2rem',
   },
   themeToggle: {
