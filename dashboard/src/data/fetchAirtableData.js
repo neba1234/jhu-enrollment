@@ -110,8 +110,16 @@ export async function fetchAirtableData() {
     console.log('🔄 Fetching enrollment data...');
     
     const backendData = await fetchFromBackend();
+
+//     if (!backendData) {
+//   throw new Error('Backend API unavailable and no credentials configured for direct access');
+// }
+
     if (!backendData) {
-      throw new Error('Backend API unavailable and no credentials configured for direct access');
+      console.warn('⚠️ Backend unavailable, falling back to static data');
+      const fallback = await fetch('/jhu-enrollment/data/cleaned/enrollment_data.json');
+      if (!fallback.ok) throw new Error('Backend API and static fallback both unavailable');
+      return await fallback.json();
     }
 
     const leadersRecords = backendData.leaders;
