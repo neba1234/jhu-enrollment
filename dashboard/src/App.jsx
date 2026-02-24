@@ -26,7 +26,7 @@ export default function App() {
   return (
     <div>
       <Header error={error} />
-      <div className="main-container">
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 1.5rem 3rem' }}>
         {/* Show loading spinner while data is being fetched */}
         {loading && !error && (
           <div style={{
@@ -75,8 +75,8 @@ export default function App() {
             color: '#1E40AF',
             fontSize: '0.875rem',
           }}>
-            ℹ️ Showing {kpis.totalEnrollments} enrollments from Airtable.
-            Completion metrics appear as "—" because <code>completion_status</code> and <code>score</code> fields
+            ℹ️ Showing {kpis.totalEnrollments} enrollments from Airtable. 
+            Completion metrics appear as "—" because <code>completion_status</code> and <code>score</code> fields 
             are not populated in the data. This demonstrates real-world data validation needs.
           </div>
         )}

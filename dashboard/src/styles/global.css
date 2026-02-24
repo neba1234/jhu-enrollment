@@ -179,22 +179,3 @@ body {
   input, select { width: 100% !important; }
 }
 
-/* Main App Container Layout */
-.main-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1.5rem 3rem;
-}
-
-@media (max-width: 768px) {
-  .main-container {
-    padding: 0 1rem 2rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .main-container {
-    padding: 0 0.8rem 1.5rem;
-  }
-}
-

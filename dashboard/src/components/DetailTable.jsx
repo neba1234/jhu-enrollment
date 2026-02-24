@@ -88,9 +88,9 @@ export default function DetailTable({ enrollments, leaders }) {
         title="Leader-Level Detail"
         subtitle={`All ${enrollments.length} course enrollments — click column headers to sort.`}
       />
-      <Card>
+      <Card style={{ overflowX: 'auto' }}>
         {/* Search */}
-        <div style={{ marginBottom: '.75rem', position: 'relative', maxWidth: 280, width: '100%' }}>
+        <div style={{ marginBottom: '.75rem', position: 'relative', maxWidth: 280 }}>
           <Search
             size={15}
             style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: 'var(--slate)', opacity: .5 }}
@@ -116,86 +116,84 @@ export default function DetailTable({ enrollments, leaders }) {
           />
         </div>
 
-        <div style={{ overflowX: 'auto', margin: '0 -0.5rem', padding: '0 0.5rem' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '.82rem', minWidth: '600px' }}>
-            <thead>
-              <tr>
-                {columns.map((col) => (
-                  <th
-                    key={col.key}
-                    onClick={() => toggleSort(col.key)}
-                    style={{
-                      textAlign: 'left',
-                      padding: '.55rem .65rem',
-                      fontWeight: 600,
-                      fontSize: '.72rem',
-                      textTransform: 'uppercase',
-                      letterSpacing: '.06em',
-                      color: 'var(--slate)',
-                      borderBottom: '2px solid var(--navy)',
-                      cursor: 'pointer',
-                      userSelect: 'none',
-                      whiteSpace: 'nowrap',
-                      width: col.width,
-                    }}
-                  >
-                    <span style={{ display: 'inline-flex', alignItems: 'center' }}>
-                      {col.label}
-                      <SortIcon col={col.key} />
-                    </span>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {sorted.map((e, i) => {
-                const leader = leaderMap[e.record_id] || {};
-                return (
-                  <tr
-                    key={i}
-                    style={{
-                      borderBottom: '1px solid var(--border)',
-                      transition: 'background .1s',
-                    }}
-                    onMouseEnter={(ev) => { ev.currentTarget.style.background = 'rgba(0,45,114,.02)'; }}
-                    onMouseLeave={(ev) => { ev.currentTarget.style.background = 'transparent'; }}
-                  >
-                    <td style={{ padding: '.55rem .65rem', fontWeight: 500 }}>
-                      <div>{shortName(e.leader_name)}</div>
-                      <div style={{ fontSize: '.7rem', color: 'var(--slate)', fontWeight: 400 }}>
-                        {leader.title || ''}
-                      </div>
-                    </td>
-                    <td style={{ padding: '.55rem .65rem' }}>{e.city}, {e.state}</td>
-                    <td style={{ padding: '.55rem .65rem' }}>{e.course_name}</td>
-                    <td style={{ padding: '.55rem .65rem' }}>
-                      <Badge type={e.program_center === 'GovEx' ? 'govex' : 'bcpi'}>
-                        {e.program_center}
-                      </Badge>
-                    </td>
-                    <td style={{ padding: '.55rem .65rem', textAlign: 'center' }}>{e.duration_weeks}</td>
-                    <td style={{ padding: '.55rem .65rem' }}>
-                      <Badge type={e.completion_status === 'Completed' ? 'completed' : 'progress'}>
-                        {e.completion_status}
-                      </Badge>
-                    </td>
-                    <td style={{ padding: '.55rem .65rem' }}>
-                      {e.score != null ? (
-                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '.3rem', fontWeight: 600, fontSize: '.8rem' }}>
-                          <span style={{
-                            width: 8, height: 8, borderRadius: '50%',
-                            background: e.score >= 90 ? 'var(--success)' : 'var(--gold)',
-                          }} />
-                          {e.score}%
-                        </span>
-                      ) : '—'}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '.82rem' }}>
+          <thead>
+            <tr>
+              {columns.map((col) => (
+                <th
+                  key={col.key}
+                  onClick={() => toggleSort(col.key)}
+                  style={{
+                    textAlign: 'left',
+                    padding: '.55rem .65rem',
+                    fontWeight: 600,
+                    fontSize: '.72rem',
+                    textTransform: 'uppercase',
+                    letterSpacing: '.06em',
+                    color: 'var(--slate)',
+                    borderBottom: '2px solid var(--navy)',
+                    cursor: 'pointer',
+                    userSelect: 'none',
+                    whiteSpace: 'nowrap',
+                    width: col.width,
+                  }}
+                >
+                  <span style={{ display: 'inline-flex', alignItems: 'center' }}>
+                    {col.label}
+                    <SortIcon col={col.key} />
+                  </span>
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {sorted.map((e, i) => {
+              const leader = leaderMap[e.record_id] || {};
+              return (
+                <tr
+                  key={i}
+                  style={{
+                    borderBottom: '1px solid var(--border)',
+                    transition: 'background .1s',
+                  }}
+                  onMouseEnter={(ev) => { ev.currentTarget.style.background = 'rgba(0,45,114,.02)'; }}
+                  onMouseLeave={(ev) => { ev.currentTarget.style.background = 'transparent'; }}
+                >
+                  <td style={{ padding: '.55rem .65rem', fontWeight: 500 }}>
+                    <div>{shortName(e.leader_name)}</div>
+                    <div style={{ fontSize: '.7rem', color: 'var(--slate)', fontWeight: 400 }}>
+                      {leader.title || ''}
+                    </div>
+                  </td>
+                  <td style={{ padding: '.55rem .65rem' }}>{e.city}, {e.state}</td>
+                  <td style={{ padding: '.55rem .65rem' }}>{e.course_name}</td>
+                  <td style={{ padding: '.55rem .65rem' }}>
+                    <Badge type={e.program_center === 'GovEx' ? 'govex' : 'bcpi'}>
+                      {e.program_center}
+                    </Badge>
+                  </td>
+                  <td style={{ padding: '.55rem .65rem', textAlign: 'center' }}>{e.duration_weeks}</td>
+                  <td style={{ padding: '.55rem .65rem' }}>
+                    <Badge type={e.completion_status === 'Completed' ? 'completed' : 'progress'}>
+                      {e.completion_status}
+                    </Badge>
+                  </td>
+                  <td style={{ padding: '.55rem .65rem' }}>
+                    {e.score != null ? (
+                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: '.3rem', fontWeight: 600, fontSize: '.8rem' }}>
+                        <span style={{
+                          width: 8, height: 8, borderRadius: '50%',
+                          background: e.score >= 90 ? 'var(--success)' : 'var(--gold)',
+                        }} />
+                        {e.score}%
+                      </span>
+                    ) : '—'}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
 
         {sorted.length === 0 && (
           <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--slate)', fontSize: '.85rem' }}>
