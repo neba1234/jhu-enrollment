@@ -221,10 +221,6 @@ https://neba1234.github.io/jhu-enrollment/
 
 The Airtable Interface is kept private for safety. If needed, screenshots can be shared upon request.
 
-Screenshots:
-
-![Airtable Interface - Dean Review](docs/screenshots/airtable-interface-overview.PNG)
-
 ---
 
 ## Key Findings
