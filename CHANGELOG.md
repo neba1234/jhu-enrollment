@@ -69,9 +69,32 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [1.1.0] - 2026-02-24
+
+### Changed
+
+- **Backend Migration** — Replaced Vercel serverless functions with a Django backend
+  - New `backend/` Django project with settings, URLs, WSGI
+  - New `airtable_api/` Django app with three proxy views
+  - CORS support via `django-cors-headers`
+  - Environment variables loaded from `.env` via `python-dotenv`
+- **Frontend** — Updated `fetchAirtableData.js` to call Django API (`localhost:8000`) instead of Vercel
+- **Dependencies** — Added `django>=4.2`, `django-cors-headers>=4.3`, `python-dotenv>=1.0` to `requirements.txt`
+
+### Removed
+
+- `vercel.json` — No longer needed
+- `api/` directory — Vercel serverless functions (`enrollments.js`, `cities.js`, `leaders.js`) replaced by Django views
+
+### Added
+
+- `manage.py` — Django management CLI
+- `.env.example` — Environment variable template for local development
+
+---
+
 ## Future Enhancements
 
-- [ ] Real-time data syncing from Airtable API to React dashboard
 - [ ] Additional filters and drill-down views in React dashboard
 - [ ] Automated data refresh workflows in Airtable
 - [ ] Export functionality (CSV)

@@ -166,7 +166,7 @@ function processEnrollmentData(rawData) {
 }
 
 /**
- * Hook to fetch and process live enrollment data from Vercel backend
+ * Hook to fetch and process live enrollment data from Django backend
  */
 export function useEnrollmentData() {
   const [liveData, setLiveData] = useState(null);

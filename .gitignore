@@ -16,8 +16,9 @@ dashboard/.env
 dashboard/.vite/
 dashboard/dist/
 
-# Vercel
-.vercel
+# Django
+db.sqlite3
+*.log
 
 # OS
 .DS_Store

@@ -17,10 +17,11 @@ Thank you for your interest in contributing! This document outlines how to get i
 
 ## Development Setup
 
-### Backend (Python)
+### Backend (Django)
 ```bash
 pip install -r requirements.txt
-python src/parse_data.py
+cp .env.example .env       # fill in Airtable credentials
+python manage.py runserver 8000
 ```
 
 ### Frontend (React + Vite)
@@ -30,12 +31,16 @@ npm install
 npm run dev
 ```
 
+Open http://localhost:5173/jhu-enrollment/ — the React app calls the Django API on port 8000.
+
 ## Making Changes
 
 - **Data pipeline**: Modify `src/parse_data.py` or `src/airtable_upload.py`
+- **API endpoints**: Edit `airtable_api/views.py`
+- **Django config**: Edit `backend/settings.py`
 - **Dashboard UI**: Edit files in `dashboard/src/components/`
 - **Styles**: Update `dashboard/src/styles/global.css`
-- **Test locally**: Use `npm run dev` for live reload
+- **Test locally**: Run both Django (`manage.py runserver`) and Vite (`npm run dev`)
 
 ## Submitting Changes
 

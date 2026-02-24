@@ -1,12 +1,12 @@
 /**
- * fetchAirtableData.js — Fetch enrollment data from Vercel backend API
+ * fetchAirtableData.js — Fetch enrollment data from Django backend API
  * 
- * For live Airtable data, the frontend calls your Vercel serverless functions,
+ * For live Airtable data, the frontend calls Django API views,
  * which securely handle API credentials on the server side.
  * No credentials are exposed in the client build.
  */
 
-// Always fetch live data from Vercel backend API
+// Always fetch live data from Django backend API
 
 /**
  * Transform Airtable records to match the JSON structure
@@ -64,15 +64,14 @@ function transformEnrollments(records, leaderMap = {}, cityMap = {}) {
 }
 
 /**
- * Fetch from Vercel backend API (server-side credentials, no client exposure)
+ * Fetch from Django backend API (server-side credentials, no client exposure)
  */
 async function fetchFromBackend() {
   try {
-    // Use Vercel backend URL from env variable, or fall back to production URL
-    // In local dev, this allows connecting to the deployed backend
-    const baseUrl = import.meta.env.VITE_API_URL || 'https://jhu-enrollment-fixed.vercel.app';
+    // Use Django backend URL from env variable, or fall back to local dev server
+    const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
-    console.log('🔄 Fetching data from backend API:', baseUrl);
+    console.log('🔄 Fetching data from Django backend API:', baseUrl);
 
     const [leadersRes, citiesRes, enrollmentsRes] = await Promise.all([
       fetch(`${baseUrl}/api/leaders`),
@@ -88,7 +87,7 @@ async function fetchFromBackend() {
     const citiesData = await citiesRes.json();
     const enrollmentsData = await enrollmentsRes.json();
 
-    console.log('✅ Backend API data received');
+    console.log('✅ Django backend API data received');
 
     return {
       leaders: leadersData.records,

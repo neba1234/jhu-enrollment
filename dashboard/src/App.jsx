@@ -1,4 +1,4 @@
-// Enrollment dashboard — fetches from Vercel backend API
+// Enrollment dashboard — fetches from Django backend API
 import { useEnrollmentData } from './data/useEnrollmentDataLive';
 import Header from './components/Header';
 import KPIStrip from './components/KPIStrip';
