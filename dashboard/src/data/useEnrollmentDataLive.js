@@ -172,26 +172,23 @@ export function useEnrollmentData() {
   const [liveData, setLiveData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [lastRefreshed, setLastRefreshed] = useState(null);
 
-  // Fetch live data on mount
+  // Fetch data on mount
   useEffect(() => {
-    loadLiveData();
+    const loadData = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const data = await fetchAirtableData();
+        setLiveData(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadData();
   }, []);
-
-  const loadLiveData = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await fetchAirtableData();
-      setLiveData(data);
-      setLastRefreshed(new Date());
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const processedData = useMemo(
     () => (liveData ? processEnrollmentData(liveData) : null),
@@ -210,10 +207,7 @@ export function useEnrollmentData() {
       kpis: { totalLeaders: 0, totalCities: 0, totalEnrollments: 0, completionRate: 0, avgScore: 0, totalCompleted: 0, totalInProgress: 0 },
       timeline: [],
     }),
-    isLiveMode: true,
     loading,
     error,
-    lastRefreshed,
-    refresh: loadLiveData,
   };
 }

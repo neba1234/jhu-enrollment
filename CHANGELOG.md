@@ -74,6 +74,6 @@ All notable changes to this project will be documented in this file.
 - [ ] Real-time data syncing from Airtable API to React dashboard
 - [ ] Additional filters and drill-down views in React dashboard
 - [ ] Automated data refresh workflows in Airtable
-- [ ] Export functionality (CSV, PDF reports)
+- [ ] Export functionality (CSV)
 - [ ] Multi-language support
 - [ ] Accessibility improvements (WCAG AA)

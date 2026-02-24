@@ -190,9 +190,7 @@ enrollment_data.csv
 ```
 https://neba1234.github.io/jhu-enrollment/
 ```
-- Fetches live data from Airtable via Vercel backend API
-- Shows "🔴 ● LIVE" badge when connected
-- Refresh button to update data in real-time
+- Fetches data from Airtable via Vercel backend API
 - Frontend hosted on GitHub Pages, backend on Vercel
 
 ### To Deploy Your Own Version

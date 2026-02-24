@@ -1,4 +1,4 @@
-import { GraduationCap, Moon, Sun, Zap, AlertCircle } from 'lucide-react';
+import { GraduationCap, Moon, Sun } from 'lucide-react';
 import { useDarkMode } from '../hooks/useDarkMode';
 
 // Get current month/year for data date display
@@ -92,7 +92,7 @@ const styles = {
   },
 };
 
-export default function Header({ isLiveMode, error }) {
+export default function Header({ error }) {
   const [isDark, setIsDark] = useDarkMode();
 
   return (
@@ -101,20 +101,6 @@ export default function Header({ isLiveMode, error }) {
       <div style={styles.inner}>
         <div>
           <div style={styles.badge}>
-            {isLiveMode && !error && (
-              <>
-                <Zap size={14} style={{ color: '#EF4444' }} />
-                <span style={{ color: '#EF4444', fontWeight: 700 }}>● LIVE</span>
-                <span>•</span>
-              </>
-            )}
-            {isLiveMode && error && (
-              <>
-                <AlertCircle size={14} style={{ color: '#f87171' }} />
-                <span style={{ color: '#f87171', fontWeight: 700 }}>● FALLBACK</span>
-                <span>•</span>
-              </>
-            )}
             <GraduationCap size={14} />
             Johns Hopkins University · School of Government &amp; Policy
           </div>
