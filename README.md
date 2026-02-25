@@ -8,6 +8,8 @@
 
 A full-stack solution for parsing, cleaning, uploading to Airtable, and visualizing enrollment data for the Johns Hopkins University School of Government & Policy.
 
+🔗 **[Live Dashboard](https://neba1234.github.io/jhu-enrollment/)**
+
 ---
 
 ## Table of Contents
